@@ -42,6 +42,11 @@ const SPECS = [
   },
 ] as const;
 
+function scrollToHash(hash: string) {
+  const id = hash.replace("#", "");
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
+
 const interactive = "pointer-events-auto";
 
 /**
@@ -96,6 +101,10 @@ function OverlayNav({
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 shadow-[0_8px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:px-5">
         <a
           href="#top"
+          onClick={(event) => {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           className={cn(
             interactive,
             "flex items-center gap-2.5 font-semibold tracking-tight"
@@ -114,6 +123,10 @@ function OverlayNav({
             <a
               key={link.href}
               href={link.href}
+              onClick={(event) => {
+                event.preventDefault();
+                scrollToHash(link.href);
+              }}
               className={cn(
                 interactive,
                 "text-sm text-foreground/70 transition-colors hover:text-foreground"
@@ -163,7 +176,11 @@ function OverlayNav({
               <a
                 key={link.href}
                 href={link.href}
-                onClick={onCloseMenu}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onCloseMenu();
+                  scrollToHash(link.href);
+                }}
                 className="rounded-lg px-3 py-2.5 text-sm text-foreground/80 hover:bg-white/5"
               >
                 {link.label}

@@ -18,6 +18,8 @@ interface SceneCanvasProps {
   /** Content to render inside the scene. Falls back to a demo AI orb. */
   children?: ReactNode;
   className?: string;
+  /** Wheel-zoom. Off on the marketing homepage so the page can scroll. */
+  enableZoom?: boolean;
 }
 
 /**
@@ -27,7 +29,11 @@ interface SceneCanvasProps {
  * particle/star backdrop, and damped orbit controls that can't dip below
  * the ground.
  */
-export function SceneCanvas({ children, className }: SceneCanvasProps) {
+export function SceneCanvas({
+  children,
+  className,
+  enableZoom = true,
+}: SceneCanvasProps) {
   const subjectRef = useRef<Group>(null);
   const controlsRef = useRef<OrbitControlsImpl>(null);
 
@@ -103,7 +109,7 @@ export function SceneCanvas({ children, className }: SceneCanvasProps) {
 
           <ExploreRig subjectRef={subjectRef} controlsRef={controlsRef} />
 
-          <SceneControls controlsRef={controlsRef} />
+          <SceneControls controlsRef={controlsRef} enableZoom={enableZoom} />
         </Canvas>
 
         <HeroOverlay />
@@ -116,8 +122,10 @@ export function SceneCanvas({ children, className }: SceneCanvasProps) {
  * tighter zoom once the camera has settled in explore mode. */
 function SceneControls({
   controlsRef,
+  enableZoom,
 }: {
   controlsRef: MutableRefObject<OrbitControlsImpl | null>;
+  enableZoom: boolean;
 }) {
   const explore = useExploreOptional();
   const interactive =
@@ -130,6 +138,7 @@ function SceneControls({
       enableDamping
       dampingFactor={0.06}
       enablePan={false}
+      enableZoom={enableZoom}
       minDistance={explore?.state === "exploring" ? 2.2 : 3.5}
       maxDistance={16}
       minPolarAngle={0.15}

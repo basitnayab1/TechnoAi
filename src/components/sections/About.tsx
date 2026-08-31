@@ -27,7 +27,7 @@ export function About() {
   const contentRef = useFadeInOnScroll<HTMLDivElement>();
 
   return (
-    <section id="services" className="relative overflow-hidden py-24 sm:py-32">
+    <section id="services" className="relative scroll-mt-8 overflow-hidden py-24 sm:py-32">
       <div className="absolute inset-0 bg-surface" />
       <div className="absolute inset-0 bg-radial-fade opacity-60" />
 

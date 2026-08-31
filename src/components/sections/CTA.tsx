@@ -9,7 +9,7 @@ export function CTA() {
   const ref = useFadeInOnScroll<HTMLDivElement>();
 
   return (
-    <section id="products" className="relative py-24 sm:py-32">
+    <section id="products" className="relative scroll-mt-8 py-24 sm:py-32">
       <Container>
         <div
           ref={ref}

@@ -15,7 +15,7 @@ const HeroModel = dynamic(
 export function HeroScene() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      <SceneCanvas className="h-full w-full">
+      <SceneCanvas className="h-full w-full" enableZoom={false}>
         <HeroModel />
       </SceneCanvas>
     </section>
