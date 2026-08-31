@@ -6,11 +6,11 @@ import { OrbitControls, Sparkles, Stars } from "@react-three/drei";
 import type { Group, Mesh } from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import {
-  ExploreButton,
   ExploreProvider,
   ExploreRig,
   useExploreOptional,
 } from "./ExploreSequence";
+import { HeroOverlay } from "@/components/layout/HeroOverlay";
 
 const BACKDROP_COLOR = "#030712";
 
@@ -34,6 +34,7 @@ export function SceneCanvas({ children, className }: SceneCanvasProps) {
   return (
     <ExploreProvider>
       <div
+        id="top"
         className={`relative ${className ?? "h-screen w-screen"}`}
         style={{ background: BACKDROP_COLOR }}
       >
@@ -105,9 +106,7 @@ export function SceneCanvas({ children, className }: SceneCanvasProps) {
           <SceneControls controlsRef={controlsRef} />
         </Canvas>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-6 pb-8 pt-16 bg-gradient-to-t from-background/80 to-transparent">
-          <ExploreButton />
-        </div>
+        <HeroOverlay />
       </div>
     </ExploreProvider>
   );

@@ -71,7 +71,7 @@ function FeatureCard({ feature }: { feature: (typeof features)[number] }) {
 
 export function Features() {
   return (
-    <section id="platform" className="relative py-24 sm:py-32">
+    <section id="solutions" className="relative py-24 sm:py-32">
       <Container className="flex flex-col gap-16">
         <SectionHeading
           eyebrow="Platform"
