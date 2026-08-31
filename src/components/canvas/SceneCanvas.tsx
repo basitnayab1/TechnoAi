@@ -1,9 +1,16 @@
 "use client";
 
-import { Suspense, useRef, type ReactNode } from "react";
+import { Suspense, useRef, type MutableRefObject, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sparkles, Stars } from "@react-three/drei";
-import type { Mesh } from "three";
+import type { Group, Mesh } from "three";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import {
+  ExploreButton,
+  ExploreProvider,
+  ExploreRig,
+  useExploreOptional,
+} from "./ExploreSequence";
 
 const BACKDROP_COLOR = "#030712";
 
@@ -21,83 +28,114 @@ interface SceneCanvasProps {
  * the ground.
  */
 export function SceneCanvas({ children, className }: SceneCanvasProps) {
+  const subjectRef = useRef<Group>(null);
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+
   return (
-    <div
-      className={className ?? "h-screen w-screen"}
-      style={{ background: BACKDROP_COLOR }}
-    >
-      <Canvas
-        shadows
-        camera={{ position: [0, 2.2, 8], fov: 45 }}
-        gl={{ antialias: true }}
+    <ExploreProvider>
+      <div
+        className={`relative ${className ?? "h-screen w-screen"}`}
+        style={{ background: BACKDROP_COLOR }}
       >
-        <color attach="background" args={[BACKDROP_COLOR]} />
-        <fog attach="fog" args={[BACKDROP_COLOR, 10, 32]} />
+        <Canvas
+          shadows
+          camera={{ position: [0, 2.2, 8], fov: 45 }}
+          gl={{ antialias: true }}
+        >
+          <color attach="background" args={[BACKDROP_COLOR]} />
+          <fog attach="fog" args={[BACKDROP_COLOR, 10, 32]} />
 
-        {/* Studio lighting */}
-        <ambientLight intensity={0.35} color="#8892b0" />
-        <directionalLight
-          castShadow
-          position={[5, 8, 4]}
-          intensity={1.4}
-          color="#ffffff"
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
-          shadow-camera-near={0.5}
-          shadow-camera-far={30}
-          shadow-bias={-0.0005}
-        />
-        {/* Cyan neon accent */}
-        <pointLight
-          position={[-4.5, 2, 3.5]}
-          intensity={18}
-          distance={14}
-          decay={2}
-          color="#22d3ee"
-        />
-        {/* Purple neon accent */}
-        <pointLight
-          position={[4.5, 1.5, -3]}
-          intensity={18}
-          distance={14}
-          decay={2}
-          color="#a855f7"
-        />
+          {/* Studio lighting */}
+          <ambientLight intensity={0.35} color="#8892b0" />
+          <directionalLight
+            castShadow
+            position={[5, 8, 4]}
+            intensity={1.4}
+            color="#ffffff"
+            shadow-mapSize-width={2048}
+            shadow-mapSize-height={2048}
+            shadow-camera-near={0.5}
+            shadow-camera-far={30}
+            shadow-bias={-0.0005}
+          />
+          {/* Cyan neon accent */}
+          <pointLight
+            position={[-4.5, 2, 3.5]}
+            intensity={18}
+            distance={14}
+            decay={2}
+            color="#22d3ee"
+          />
+          {/* Purple neon accent */}
+          <pointLight
+            position={[4.5, 1.5, -3]}
+            intensity={18}
+            distance={14}
+            decay={2}
+            color="#a855f7"
+          />
 
-        <Ground />
+          <Ground />
 
-        {/* Particle / space backdrop for an AI vibe */}
-        <Sparkles
-          count={220}
-          scale={[20, 10, 20]}
-          size={2.2}
-          speed={0.3}
-          opacity={0.6}
-          color="#8a6fff"
-        />
-        <Stars
-          radius={60}
-          depth={40}
-          count={2800}
-          factor={3}
-          saturation={0}
-          fade
-          speed={0.4}
-        />
+          {/* Particle / space backdrop for an AI vibe */}
+          <Sparkles
+            count={220}
+            scale={[20, 10, 20]}
+            size={2.2}
+            speed={0.3}
+            opacity={0.6}
+            color="#8a6fff"
+          />
+          <Stars
+            radius={60}
+            depth={40}
+            count={2800}
+            factor={3}
+            saturation={0}
+            fade
+            speed={0.4}
+          />
 
-        <Suspense fallback={null}>{children ?? <DemoOrb />}</Suspense>
+          <group ref={subjectRef}>
+            <Suspense fallback={null}>{children ?? <DemoOrb />}</Suspense>
+          </group>
 
-        <OrbitControls
-          enableDamping
-          dampingFactor={0.06}
-          enablePan={false}
-          minDistance={3.5}
-          maxDistance={16}
-          minPolarAngle={0.15}
-          maxPolarAngle={Math.PI / 2 - 0.05}
-        />
-      </Canvas>
-    </div>
+          <ExploreRig subjectRef={subjectRef} controlsRef={controlsRef} />
+
+          <SceneControls controlsRef={controlsRef} />
+        </Canvas>
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-6 pb-8 pt-16 bg-gradient-to-t from-background/80 to-transparent">
+          <ExploreButton />
+        </div>
+      </div>
+    </ExploreProvider>
+  );
+}
+
+/** Orbit controls that disable during the GSAP fly sequence and allow a
+ * tighter zoom once the camera has settled in explore mode. */
+function SceneControls({
+  controlsRef,
+}: {
+  controlsRef: MutableRefObject<OrbitControlsImpl | null>;
+}) {
+  const explore = useExploreOptional();
+  const interactive =
+    !explore || explore.state === "idle" || explore.state === "exploring";
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      enabled={interactive}
+      enableDamping
+      dampingFactor={0.06}
+      enablePan={false}
+      minDistance={explore?.state === "exploring" ? 2.2 : 3.5}
+      maxDistance={16}
+      minPolarAngle={0.15}
+      maxPolarAngle={Math.PI / 2 - 0.05}
+    />
   );
 }
 
@@ -115,9 +153,10 @@ function Ground() {
  * demonstrate the shadow-casting lighting setup. */
 function DemoOrb() {
   const ref = useRef<Mesh>(null);
+  const explore = useExploreOptional();
 
   useFrame((_, delta) => {
-    if (ref.current) {
+    if (ref.current && !explore?.isSequencing) {
       ref.current.rotation.y += delta * 0.25;
     }
   });

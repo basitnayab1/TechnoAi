@@ -4,6 +4,7 @@ import { Suspense, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, Html } from "@react-three/drei";
 import { MathUtils, type Mesh, type MeshPhysicalMaterial } from "three";
+import { useExploreOptional } from "./ExploreSequence";
 
 const BASE_SCALE = 1;
 const HOVER_SCALE = 1.16;
@@ -24,14 +25,17 @@ function HeroShape() {
   const meshRef = useRef<Mesh>(null);
   const materialRef = useRef<MeshPhysicalMaterial>(null);
   const [hovered, setHovered] = useState(false);
+  const explore = useExploreOptional();
 
   useFrame((_, delta) => {
     const mesh = meshRef.current;
     const material = materialRef.current;
     if (!mesh || !material) return;
 
-    mesh.rotation.x += delta * 0.22;
-    mesh.rotation.y += delta * 0.32;
+    if (!explore?.isSequencing) {
+      mesh.rotation.x += delta * 0.22;
+      mesh.rotation.y += delta * 0.32;
+    }
 
     const targetScale = hovered ? HOVER_SCALE : BASE_SCALE;
     const nextScale = MathUtils.lerp(mesh.scale.x, targetScale, delta * 6);
