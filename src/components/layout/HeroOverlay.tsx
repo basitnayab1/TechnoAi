@@ -59,8 +59,8 @@ export function HeroOverlay() {
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-20 flex flex-col">
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-gradient-to-r from-[#030712]/85 via-[#030712]/40 to-transparent lg:w-[58%]" />
+    <div className="pointer-events-none absolute inset-0 z-20 flex min-w-0 max-w-full flex-col overflow-x-clip">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-full max-w-full bg-gradient-to-b from-[#030712]/80 via-[#030712]/45 to-[#030712]/75 lg:bg-gradient-to-r lg:from-[#030712]/85 lg:via-[#030712]/40 lg:to-transparent lg:w-[min(58%,40rem)]" />
 
       <OverlayNav
         menuOpen={menuOpen}
@@ -72,7 +72,7 @@ export function HeroOverlay() {
         }}
       />
 
-      <div className="relative flex min-h-0 flex-1 flex-col justify-between px-5 pb-6 pt-24 sm:px-8 lg:px-12 lg:pb-10 lg:pt-28">
+      <div className="relative flex min-h-0 min-w-0 flex-1 flex-col justify-between gap-6 overflow-x-clip overflow-y-auto px-4 pb-5 pt-[4.75rem] sm:gap-8 sm:px-6 sm:pb-8 sm:pt-24 lg:px-10 lg:pb-10 lg:pt-28">
         <HeroCopy
           onExploreMenuClose={() => setMenuOpen(false)}
           onBookDemo={() => setDemoOpen(true)}
@@ -97,8 +97,8 @@ function OverlayNav({
   onGetStarted: () => void;
 }) {
   return (
-    <header className="absolute inset-x-0 top-0 z-30 px-4 pt-4 sm:px-6">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 shadow-[0_8px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:px-5">
+    <header className="absolute inset-x-0 top-0 z-30 w-full min-w-0 max-w-full px-3 pt-3 sm:px-6 sm:pt-4">
+      <div className="mx-auto flex w-full min-w-0 max-w-7xl items-center justify-between gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2.5 shadow-[0_8px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:gap-4 sm:px-5 sm:py-3">
         <a
           href="#top"
           onClick={(event) => {
@@ -107,7 +107,7 @@ function OverlayNav({
           }}
           className={cn(
             interactive,
-            "flex items-center gap-2.5 font-semibold tracking-tight"
+            "flex min-w-0 shrink items-center gap-2 font-semibold tracking-tight sm:gap-2.5"
           )}
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20 text-primary-300 shadow-[0_0_16px_rgba(109,91,255,0.45)]">
@@ -118,7 +118,7 @@ function OverlayNav({
           </span>
         </a>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden min-w-0 items-center gap-5 lg:flex xl:gap-7">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
@@ -144,7 +144,7 @@ function OverlayNav({
             onClick={onGetStarted}
             className={cn(
               interactive,
-              "hidden px-5 py-2 text-xs font-semibold uppercase tracking-[0.16em] shadow-[0_0_24px_rgba(109,91,255,0.55)] sm:inline-flex"
+              "hidden px-5 py-2 text-xs font-semibold uppercase tracking-[0.16em] shadow-[0_0_24px_rgba(109,91,255,0.55)] lg:inline-flex"
             )}
           >
             Get Started
@@ -156,7 +156,7 @@ function OverlayNav({
             onClick={onToggleMenu}
             className={cn(
               interactive,
-              "flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-foreground/80 md:hidden"
+              "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-foreground/80 lg:hidden"
             )}
           >
             {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -168,7 +168,7 @@ function OverlayNav({
         <div
           className={cn(
             interactive,
-            "mx-auto mt-2 max-w-7xl rounded-2xl border border-white/10 bg-[#030712]/90 p-4 backdrop-blur-xl md:hidden"
+            "mx-auto mt-2 w-full max-w-7xl rounded-2xl border border-white/10 bg-[#030712]/90 p-4 backdrop-blur-xl lg:hidden"
           )}
         >
           <div className="flex flex-col gap-1">
@@ -221,13 +221,13 @@ function HeroCopy({
         : "Explore AI Models";
 
   return (
-    <div className="flex max-w-xl flex-col items-start gap-6 lg:max-w-lg xl:max-w-xl">
-      <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent shadow-[0_0_18px_rgba(0,229,199,0.2)]">
-        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-        Powering Next-Gen AI
+    <div className="flex w-full min-w-0 max-w-xl flex-col items-start gap-4 sm:gap-6 lg:max-w-lg xl:max-w-xl">
+      <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-accent shadow-[0_0_18px_rgba(0,229,199,0.2)] sm:px-3 sm:text-[11px] sm:tracking-[0.22em]">
+        <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-accent" />
+        <span className="truncate">Powering Next-Gen AI</span>
       </span>
 
-      <h1 className="text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.35rem]">
+      <h1 className="max-w-full text-balance break-words text-[1.75rem] font-semibold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
         Transforming Businesses with{" "}
         <span className="text-gradient animate-gradient-shift bg-[length:200%_auto]">
           Intelligent AI Solutions
@@ -240,7 +240,7 @@ function HeroCopy({
         deploy intelligence they can actually trust in production.
       </p>
 
-      <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+      <div className="flex w-full min-w-0 max-w-full flex-col gap-3 sm:max-w-md sm:flex-row">
         <Button
           type="button"
           variant={isExploring ? "secondary" : "primary"}
@@ -252,7 +252,7 @@ function HeroCopy({
           aria-busy={isBusy}
           className={cn(
             interactive,
-            "px-6 py-3 text-sm shadow-[0_0_24px_rgba(109,91,255,0.4)]"
+            "w-full min-w-0 px-5 py-3 text-sm shadow-[0_0_24px_rgba(109,91,255,0.4)] sm:w-auto sm:px-6"
           )}
         >
           {isExploring ? (
@@ -268,7 +268,7 @@ function HeroCopy({
           onClick={onBookDemo}
           className={cn(
             interactive,
-            "border-white/15 bg-white/5 px-6 py-3 text-sm backdrop-blur-md"
+            "w-full min-w-0 border-white/15 bg-white/5 px-5 py-3 text-sm backdrop-blur-md sm:w-auto sm:px-6"
           )}
         >
           <Calendar className="h-4 w-4" />
@@ -281,13 +281,13 @@ function HeroCopy({
 
 function SpecsRow() {
   return (
-    <ul className="mt-8 grid w-full max-w-xl grid-cols-1 gap-2 sm:grid-cols-3 lg:mt-0">
+    <ul className="grid w-full min-w-0 max-w-xl grid-cols-1 gap-2 sm:grid-cols-3">
       {SPECS.map((spec) => {
         const Icon = spec.icon;
         return (
           <li
             key={spec.label}
-            className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3.5 py-3 backdrop-blur-xl"
+            className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3.5 py-3 backdrop-blur-xl"
           >
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary-300">
               <Icon className="h-4 w-4" />
@@ -321,7 +321,7 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
         aria-labelledby="demo-title"
         className={cn(
           interactive,
-          "relative w-full max-w-md rounded-3xl border border-white/10 bg-[#0b0d18]/90 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl sm:p-8"
+          "relative w-full min-w-0 max-w-md rounded-3xl border border-white/10 bg-[#0b0d18]/90 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl sm:p-8"
         )}
       >
         <button

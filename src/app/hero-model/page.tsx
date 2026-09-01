@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { HeroOverlay } from "@/components/layout/HeroOverlay";
 
 const SceneCanvas = dynamic(
   () => import("@/components/canvas/SceneCanvas").then((mod) => mod.SceneCanvas),
@@ -13,8 +14,13 @@ const HeroModel = dynamic(
 
 export default function HeroModelDemoPage() {
   return (
-    <SceneCanvas>
-      <HeroModel />
-    </SceneCanvas>
+    <div className="h-[100dvh] w-full overflow-hidden">
+      <SceneCanvas
+        className="h-full w-full"
+        overlay={<HeroOverlay />}
+      >
+        <HeroModel />
+      </SceneCanvas>
+    </div>
   );
 }

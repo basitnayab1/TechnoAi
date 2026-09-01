@@ -8,5 +8,9 @@ const SceneCanvas = dynamic(
 );
 
 export default function SceneCanvasDemoPage() {
-  return <SceneCanvas />;
+  return (
+    <div className="h-[100dvh] w-full overflow-hidden">
+      <SceneCanvas className="h-full w-full" />
+    </div>
+  );
 }

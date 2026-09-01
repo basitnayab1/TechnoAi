@@ -58,7 +58,7 @@ function FeatureCard({ feature }: { feature: (typeof features)[number] }) {
   return (
     <div
       ref={ref}
-      className="group relative flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-primary/40"
+      className="group relative flex min-w-0 flex-col gap-4 rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-primary/40"
     >
       <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary-300 transition-colors group-hover:bg-primary/20">
         <Icon className="h-5 w-5" />
@@ -79,7 +79,7 @@ export function Features() {
           description="From raw model access to fully managed agents, TechnoAI gives your team one platform for the entire AI lifecycle."
         />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid min-w-0 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <FeatureCard key={feature.title} feature={feature} />
           ))}

@@ -19,8 +19,8 @@ const columns = [
 export function Footer() {
   return (
     <footer id="contact" className="border-t border-border bg-surface">
-      <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
-        <div className="col-span-2 flex flex-col gap-4">
+      <Container className="grid min-w-0 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="col-span-1 flex min-w-0 flex-col gap-4 sm:col-span-2">
           <a href="#top" className="flex items-center gap-2 font-semibold">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary-300">
               <Sparkles className="h-4 w-4" />
