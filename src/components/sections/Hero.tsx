@@ -6,6 +6,7 @@ import { gsap } from "@/lib/gsap";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { HeroCanvas } from "@/components/canvas/HeroCanvas";
+import { siteContent } from "@/lib/content";
 
 export function Hero() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -44,16 +45,16 @@ export function Hero() {
           className="inline-flex items-center gap-2 rounded-full border border-border bg-white/5 px-4 py-1.5 text-xs text-foreground/70"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-          Now shipping TechnoAI Model v3
+          {siteContent.hero.eyebrow}
         </div>
 
         <h1
           data-animate
           className="max-w-4xl text-balance text-4xl font-semibold leading-[1.1] tracking-tight sm:text-6xl"
         >
-          Intelligence, engineered for{" "}
+          {siteContent.hero.title}{" "}
           <span className="text-gradient bg-[length:200%_auto] animate-gradient-shift">
-            the real world
+            {siteContent.hero.titleAccent}
           </span>
         </h1>
 
@@ -61,19 +62,17 @@ export function Hero() {
           data-animate
           className="max-w-2xl text-balance text-lg text-foreground/60"
         >
-          TechnoAI builds foundation models, agent infrastructure, and
-          developer tools that let teams ship reliable AI products in days,
-          not quarters.
+          {siteContent.hero.description}
         </p>
 
         <div data-animate className="flex flex-col gap-4 sm:flex-row">
           <Button variant="primary" className="group px-7 py-3.5 text-base">
-            Start building free
+            {siteContent.hero.primaryCta}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Button>
           <Button variant="secondary" className="px-7 py-3.5 text-base">
             <PlayCircle className="h-4 w-4" />
-            Watch the film
+            {siteContent.hero.secondaryCta}
           </Button>
         </div>
 
@@ -81,15 +80,11 @@ export function Hero() {
           data-animate
           className="grid w-full max-w-2xl grid-cols-3 gap-6 pt-10 text-left"
         >
-          {[
-            ["120B+", "parameters trained"],
-            ["99.98%", "platform uptime"],
-            ["4,200+", "teams shipping on TechnoAI"],
-          ].map(([stat, label]) => (
-            <div key={label} className="flex flex-col gap-1">
-              <span className="text-2xl font-semibold sm:text-3xl">{stat}</span>
+          {siteContent.hero.specs.map((spec) => (
+            <div key={spec.label} className="flex flex-col gap-1">
+              <span className="text-2xl font-semibold sm:text-3xl">{spec.value}</span>
               <span className="text-xs text-foreground/50 sm:text-sm">
-                {label}
+                {spec.label}
               </span>
             </div>
           ))}

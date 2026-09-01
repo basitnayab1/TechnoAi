@@ -14,13 +14,16 @@ const HeroModel = dynamic(
 
 export default function HeroModelDemoPage() {
   return (
-    <div className="h-[100dvh] w-full overflow-hidden">
-      <SceneCanvas
-        className="h-full w-full"
-        overlay={<HeroOverlay />}
-      >
-        <HeroModel />
-      </SceneCanvas>
-    </div>
+    <main className="relative h-screen w-full overflow-hidden bg-[#030712]">
+      <div className="absolute inset-0 z-0 h-full w-full">
+        <SceneCanvas className="h-full w-full">
+          <HeroModel />
+        </SceneCanvas>
+      </div>
+
+      <div className="relative z-10 h-full w-full pointer-events-none">
+        <HeroOverlay />
+      </div>
+    </main>
   );
 }

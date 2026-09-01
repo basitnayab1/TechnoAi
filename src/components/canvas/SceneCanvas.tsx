@@ -2,21 +2,28 @@
 
 import {
   Suspense,
-  useEffect,
+  useMemo,
   useRef,
-  useState,
   type MutableRefObject,
   type ReactNode,
 } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Sparkles, Stars } from "@react-three/drei";
-import type { Group, Mesh } from "three";
+import {
+  Bloom,
+  ChromaticAberration,
+  EffectComposer,
+  Vignette,
+} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
+import { Vector2, type Group, type Mesh } from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import {
   ExploreProvider,
   ExploreRig,
   useExploreOptional,
 } from "./ExploreSequence";
+import { useCompactScene } from "./useCompactScene";
 
 const BACKDROP_COLOR = "#030712";
 
@@ -28,20 +35,6 @@ interface SceneCanvasProps {
   className?: string;
   /** Wheel-zoom. Off on the marketing homepage so the page can scroll. */
   enableZoom?: boolean;
-}
-
-function useCompactScene() {
-  const [compact, setCompact] = useState(true);
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 768px)");
-    const sync = () => setCompact(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
-
-  return compact;
 }
 
 /**
@@ -57,25 +50,44 @@ export function SceneCanvas({
   const subjectRef = useRef<Group>(null);
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const compact = useCompactScene();
+  const chromaticOffset = useMemo(
+    () => new Vector2(compact ? 0.0003 : 0.0006, compact ? 0.0003 : 0.0006),
+    [compact]
+  );
 
   return (
     <ExploreProvider>
+      {/*
+       * Root stacking context for the studio. On mobile this behaves as a
+       * flex column: the canvas wrapper below claims a fixed `45vh` at the
+       * top, and the (absolutely positioned) `overlay` lays its text panel
+       * out in the remaining `55vh` beneath it. On desktop the canvas
+       * wrapper grows to `h-screen` and the overlay resumes its classic
+       * full-bleed split look — see HeroOverlay.tsx.
+       */}
       <div
-        className={`relative h-full w-full min-w-0 overflow-hidden ${className ?? ""}`}
+        className={`relative flex h-full w-full min-w-0 flex-col overflow-hidden ${className ?? ""}`}
         style={{ background: BACKDROP_COLOR }}
       >
-        <Canvas
-          shadows={!compact}
-          dpr={compact ? [1, 1.25] : [1, 1.75]}
-          camera={{ position: compact ? [0, 1.8, 7.2] : [0, 2.2, 8], fov: 45 }}
-          gl={{
-            antialias: !compact,
-            alpha: false,
-            powerPreference: compact ? "low-power" : "high-performance",
-          }}
-          className="absolute inset-0 block h-full w-full touch-none"
-          style={{ width: "100%", height: "100%" }}
-        >
+        {/* Canvas wrapper: relative, full width, h-[45vh] on mobile so the
+         * drone stays fully visible above the text panel; h-screen on
+         * desktop restores the full-bleed backdrop behind the split overlay. */}
+        <div className="relative h-[45vh] w-full md:h-screen">
+          <Canvas
+            shadows={!compact}
+            dpr={compact ? [1, 1.25] : [1, 1.75]}
+            camera={{
+              position: compact ? [0, 0, 5] : [0, 2.2, 8],
+              fov: compact ? 60 : 45,
+            }}
+            gl={{
+              antialias: !compact,
+              alpha: false,
+              powerPreference: compact ? "low-power" : "high-performance",
+            }}
+            className="absolute inset-0 block h-full w-full touch-none"
+            style={{ width: "100%", height: "100%" }}
+          >
           <color attach="background" args={[BACKDROP_COLOR]} />
           <fog attach="fog" args={[BACKDROP_COLOR, compact ? 8 : 10, 32]} />
 
@@ -133,7 +145,37 @@ export function SceneCanvas({
           <ExploreRig subjectRef={subjectRef} controlsRef={controlsRef} />
 
           <SceneControls controlsRef={controlsRef} enableZoom={enableZoom} />
-        </Canvas>
+
+          {/*
+           * Single-pass post-processing stack. `postprocessing` merges
+           * Bloom + ChromaticAberration + Vignette into one shared fragment
+           * shader, so adding all three here costs roughly the same as one
+           * effect. Mobile ("compact") drops MSAA and renders the effect
+           * buffer at a reduced resolution to keep frame time low; desktop
+           * gets a touch more antialiasing since it has GPU headroom.
+           */}
+          <EffectComposer
+            multisampling={compact ? 0 : 4}
+            resolutionScale={compact ? 0.75 : 1}
+            enableNormalPass={false}
+          >
+            <Bloom
+              luminanceThreshold={0.2}
+              luminanceSmoothing={0.9}
+              intensity={1.2}
+              mipmapBlur
+              radius={0.55}
+            />
+            <ChromaticAberration
+              blendFunction={BlendFunction.NORMAL}
+              offset={chromaticOffset}
+              radialModulation={false}
+              modulationOffset={0}
+            />
+            <Vignette eskil={false} offset={0.28} darkness={0.85} />
+          </EffectComposer>
+          </Canvas>
+        </div>
 
         {overlay}
       </div>
@@ -149,6 +191,7 @@ function SceneControls({
   enableZoom: boolean;
 }) {
   const explore = useExploreOptional();
+  const compact = useCompactScene();
   const interactive =
     !explore || explore.state === "idle" || explore.state === "exploring";
 
@@ -164,6 +207,7 @@ function SceneControls({
       maxDistance={16}
       minPolarAngle={0.15}
       maxPolarAngle={Math.PI / 2 - 0.05}
+      target={compact ? [0, 0.2, 0] : [2, 0.2, 0]}
     />
   );
 }

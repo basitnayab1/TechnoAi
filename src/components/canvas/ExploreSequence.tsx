@@ -18,6 +18,7 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { HERO_PLACEMENT, useCompactScene } from "./useCompactScene";
 
 export type ExploreState = "idle" | "flying" | "exploring" | "returning";
 
@@ -77,11 +78,11 @@ export function ExploreProvider({ children }: { children: ReactNode }) {
 }
 
 const REST_CAMERA = { x: 0, y: 2.2, z: 8 } as const;
-const LOOK_AT = { x: 0, y: 0.2, z: 0 } as const;
+const LOOK_AT_COMPACT = { x: 0, y: 0.2, z: 0 } as const;
 
 /** Mid-arc drone waypoint, then a tight 3/4 close-up. */
-const FLY_WAYPOINT = { x: 3.35, y: 1.75, z: 5.6 } as const;
-const FLY_CLOSE = { x: 1.55, y: 0.72, z: 3.55 } as const;
+const FLY_WAYPOINT_COMPACT = { x: 3.35, y: 1.75, z: 5.6 } as const;
+const FLY_CLOSE_COMPACT = { x: 1.55, y: 0.72, z: 3.55 } as const;
 
 interface ExploreRigProps {
   subjectRef: MutableRefObject<Group | null>;
@@ -96,7 +97,25 @@ interface ExploreRigProps {
 export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
   const { camera } = useThree();
   const { state, complete } = useExplore();
+  const compact = useCompactScene();
   const timelineRef = useRef<ReturnType<typeof gsap.timeline> | null>(null);
+  const lookAt = useMemo(
+    () =>
+      compact
+        ? LOOK_AT_COMPACT
+        : {
+            x: HERO_PLACEMENT.desktop.position[0],
+            y: HERO_PLACEMENT.desktop.position[1] + 0.15,
+            z: HERO_PLACEMENT.desktop.position[2],
+          },
+    [compact]
+  );
+  const flyWaypoint = compact
+    ? FLY_WAYPOINT_COMPACT
+    : { x: 4.15, y: 1.7, z: 5.4 };
+  const flyClose = compact
+    ? FLY_CLOSE_COMPACT
+    : { x: 3.15, y: 0.7, z: 3.7 };
 
   useEffect(() => {
     const subject = subjectRef.current;
@@ -106,7 +125,7 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
     timelineRef.current?.kill();
 
     const look = () => {
-      camera.lookAt(LOOK_AT.x, LOOK_AT.y, LOOK_AT.z);
+      camera.lookAt(lookAt.x, lookAt.y, lookAt.z);
       controls?.update();
     };
 
@@ -114,7 +133,7 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
       const tl = gsap.timeline({
         defaults: { ease: "power3.inOut" },
         onComplete: () => {
-          controls?.target.set(LOOK_AT.x, LOOK_AT.y, LOOK_AT.z);
+          controls?.target.set(lookAt.x, lookAt.y, lookAt.z);
           controls?.update();
           complete();
         },
@@ -122,12 +141,12 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
 
       tl.to(
         camera.position,
-        { ...FLY_WAYPOINT, duration: 1.15, onUpdate: look },
+        { ...flyWaypoint, duration: 1.15, onUpdate: look },
         0
       );
       tl.to(
         camera.position,
-        { ...FLY_CLOSE, duration: 1.25, onUpdate: look },
+        { ...flyClose, duration: 1.25, onUpdate: look },
         0.95
       );
       tl.to(
@@ -145,7 +164,7 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
       const tl = gsap.timeline({
         defaults: { ease: "power3.inOut" },
         onComplete: () => {
-          controls?.target.set(LOOK_AT.x, LOOK_AT.y, LOOK_AT.z);
+          controls?.target.set(lookAt.x, lookAt.y, lookAt.z);
           controls?.update();
           complete();
         },
@@ -166,7 +185,7 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
       timelineRef.current?.kill();
       timelineRef.current = null;
     };
-  }, [camera, complete, controlsRef, state, subjectRef]);
+  }, [camera, complete, controlsRef, flyClose, flyWaypoint, lookAt, state, subjectRef]);
 
   return null;
 }

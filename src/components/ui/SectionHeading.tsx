@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { fadeUp, springSoft, staggerContainer, useMotionPrefs } from "@/lib/motion";
 
 interface SectionHeadingProps {
   eyebrow?: string;
@@ -15,27 +19,45 @@ export function SectionHeading({
   align = "center",
   className,
 }: SectionHeadingProps) {
+  const { reduce } = useMotionPrefs();
+
   return (
-    <div
+    <motion.div
       className={cn(
         "flex flex-col gap-4",
         align === "center" ? "items-center text-center" : "items-start text-left",
         className
       )}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.4 }}
+      variants={reduce ? fadeUp : staggerContainer}
     >
       {eyebrow && (
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-300">
+        <motion.span
+          variants={fadeUp}
+          transition={springSoft}
+          className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-300"
+        >
           {eyebrow}
-        </span>
+        </motion.span>
       )}
-      <h2 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+      <motion.h2
+        variants={fadeUp}
+        transition={springSoft}
+        className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl"
+      >
         {title}
-      </h2>
+      </motion.h2>
       {description && (
-        <p className="max-w-2xl text-balance text-base text-foreground/60 sm:text-lg">
+        <motion.p
+          variants={fadeUp}
+          transition={springSoft}
+          className="max-w-2xl text-balance text-base text-foreground/60 sm:text-lg"
+        >
           {description}
-        </p>
+        </motion.p>
       )}
-    </div>
+    </motion.div>
   );
 }

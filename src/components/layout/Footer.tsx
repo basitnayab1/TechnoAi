@@ -1,77 +1,101 @@
-import { Sparkles, Mail, Rss, Globe2 } from "lucide-react";
+"use client";
+
+import { motion } from "framer-motion";
+import { Sparkles, Mail, Globe2, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { fadeUp, springSoft } from "@/lib/motion";
+import { siteContent } from "@/lib/content";
 
 const columns = [
-  {
-    title: "Platform",
-    links: ["Model Studio", "Inference API", "Agents", "Fine-tuning"],
-  },
-  {
-    title: "Company",
-    links: ["About", "Careers", "Blog", "Press"],
-  },
-  {
-    title: "Resources",
-    links: ["Documentation", "Changelog", "Status", "Security"],
-  },
+  { title: "Solutions", links: siteContent.footer.sitemap.solutions },
+  { title: "Industries", links: siteContent.footer.sitemap.industries },
+  { title: "Services", links: siteContent.footer.sitemap.services },
 ];
 
 export function Footer() {
   return (
     <footer id="contact" className="border-t border-border bg-surface">
       <Container className="grid min-w-0 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
-        <div className="col-span-1 flex min-w-0 flex-col gap-4 sm:col-span-2">
+        <motion.div
+          variants={fadeUp}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={springSoft}
+          className="col-span-1 flex min-w-0 flex-col gap-4 sm:col-span-2"
+        >
           <a href="#top" className="flex items-center gap-2 font-semibold">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary-300">
               <Sparkles className="h-4 w-4" />
             </span>
             <span>
-              Techno<span className="text-primary-300">AI</span>
+              Techno<span className="text-primary-300">Ai</span>
             </span>
           </a>
           <p className="max-w-xs text-sm text-foreground/60">
-            Building the foundation models and agent infrastructure that
-            power the next generation of intelligent products.
+            {siteContent.company.blurb}
           </p>
+          <ul className="flex flex-col gap-2 pt-1 text-sm text-foreground/55">
+            {siteContent.company.locations.map((location) => (
+              <li key={location.label} className="flex items-start gap-2">
+                <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-300" />
+                <span>
+                  <span className="font-medium text-foreground/80">
+                    {location.label}
+                  </span>
+                  {" — "}
+                  {location.city}, {location.country}
+                </span>
+              </li>
+            ))}
+          </ul>
           <div className="flex items-center gap-3 pt-2">
-            {[Mail, Rss, Globe2].map((Icon, i) => (
+            {[Mail, Globe2].map((Icon, i) => (
               <a
                 key={i}
-                href="#"
+                href={i === 0 ? "mailto:info@technoai.ae" : "https://technoai.ae/"}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/60 transition-colors hover:border-primary/40 hover:text-primary-300"
               >
                 <Icon className="h-4 w-4" />
               </a>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {columns.map((column) => (
-          <div key={column.title} className="flex flex-col gap-3">
+        {columns.map((column, columnIndex) => (
+          <motion.div
+            key={column.title}
+            variants={fadeUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ ...springSoft, delay: 0.1 + columnIndex * 0.1 }}
+            className="flex flex-col gap-3"
+          >
             <h4 className="text-sm font-semibold text-foreground">
               {column.title}
             </h4>
             {column.links.map((link) => (
               <a
                 key={link}
-                href="#"
+                href={column.title === "Services" ? "#services" : "#solutions"}
                 className="text-sm text-foreground/60 transition-colors hover:text-foreground"
               >
                 {link}
               </a>
             ))}
-          </div>
+          </motion.div>
         ))}
       </Container>
 
       <Container className="flex flex-col items-center justify-between gap-4 border-t border-border py-6 text-xs text-foreground/40 sm:flex-row">
-        <p>© {new Date().getFullYear()} TechnoAI, Inc. All rights reserved.</p>
+        <p>
+          © {new Date().getFullYear()} {siteContent.company.name}. All rights
+          reserved.
+        </p>
         <div className="flex gap-6">
-          <a href="#" className="hover:text-foreground/70">
-            Privacy
-          </a>
-          <a href="#" className="hover:text-foreground/70">
-            Terms
+          <a href="https://technoai.ae/" className="hover:text-foreground/70">
+            technoai.ae
           </a>
         </div>
       </Container>

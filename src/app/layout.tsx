@@ -14,9 +14,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "TechnoAI — Intelligence, engineered for the real world",
+  title: "TechnoAi — Advanced Technology Solutions for Mission Critical Operations",
   description:
-    "TechnoAI builds foundation models, agent infrastructure, and developer tools that let teams ship reliable AI products in days, not quarters.",
+    "Delivering drones, robotics, satellite connectivity, AI hardware, security systems and infrastructure technology for government, enterprise and industrial sectors.",
 };
 
 export default function RootLayout({

@@ -5,13 +5,9 @@ import { Sparkles, Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { siteContent } from "@/lib/content";
 
-const links = [
-  { label: "Platform", href: "#platform" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Company", href: "#company" },
-  { label: "Contact", href: "#contact" },
-];
+const links = siteContent.nav;
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -39,7 +35,7 @@ export function Navbar() {
             <Sparkles className="h-4 w-4" />
           </span>
           <span className="text-base">
-            Techno<span className="text-primary-300">AI</span>
+            Techno<span className="text-primary-300">Ai</span>
           </span>
         </a>
 
@@ -57,7 +53,7 @@ export function Navbar() {
 
         <div className="hidden md:block">
           <Button variant="primary" className="px-5 py-2.5 text-sm">
-            Book a demo
+            {siteContent.hero.primaryCta}
           </Button>
         </div>
 
@@ -84,7 +80,7 @@ export function Navbar() {
               </a>
             ))}
             <Button variant="primary" className="w-full">
-              Book a demo
+              {siteContent.hero.primaryCta}
             </Button>
           </Container>
         </div>

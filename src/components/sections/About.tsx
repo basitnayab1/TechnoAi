@@ -1,79 +1,96 @@
 "use client";
 
-import { Cpu, Globe2, Users } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Wallet,
+  ShoppingCart,
+  Truck,
+  Wrench,
+  ClipboardList,
+  Headset,
+  type LucideIcon,
+} from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { useFadeInOnScroll } from "@/hooks/useFadeInOnScroll";
+import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
+import { siteContent } from "@/lib/content";
 
-const pillars = [
-  {
-    icon: Cpu,
-    stat: "3.2M",
-    label: "inferences served daily across our GPU fleet",
-  },
-  {
-    icon: Globe2,
-    stat: "14",
-    label: "regions with dedicated low-latency inference clusters",
-  },
-  {
-    icon: Users,
-    stat: "180+",
-    label: "researchers and engineers building the platform",
-  },
+const SERVICE_ICONS: LucideIcon[] = [
+  Wallet,
+  ShoppingCart,
+  Truck,
+  Wrench,
+  ClipboardList,
+  Headset,
 ];
 
 export function About() {
-  const contentRef = useFadeInOnScroll<HTMLDivElement>();
+  const { fade, spring } = useMotionPrefs();
+  const { eyebrow, title, description, body } = siteContent.sections.services;
 
   return (
     <section id="services" className="relative scroll-mt-8 overflow-hidden py-24 sm:py-32">
       <div className="absolute inset-0 bg-surface" />
       <div className="absolute inset-0 bg-radial-fade opacity-60" />
 
-      <Container className="relative z-10 grid gap-16 lg:grid-cols-2 lg:items-center">
-        <div ref={contentRef} className="flex flex-col gap-6">
+      <Container className="relative z-10 grid gap-16 lg:grid-cols-2 lg:items-start">
+        <div className="flex flex-col gap-6">
           <SectionHeading
             align="left"
-            eyebrow="Why TechnoAI"
-            title="Research-grade models, production-grade infrastructure"
-            description="We spent the last three years building the model training stack, the inference network, and the safety tooling most teams never get to see — so you can focus on the product on top."
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
           />
+          <motion.p
+            {...fade}
+            transition={{ ...spring, delay: 0.18 }}
+            className="text-sm leading-relaxed text-foreground/70"
+          >
+            {body}
+          </motion.p>
           <ul className="flex flex-col gap-4 text-sm text-foreground/70">
-            <li className="flex gap-3">
-              <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />
-              Continuous evaluation pipelines catch regressions before they
-              reach production traffic.
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />
-              Dedicated capacity guarantees for enterprise workloads, with
-              transparent usage-based pricing.
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />
-              A research team publishing openly on interpretability, safety,
-              and alignment.
-            </li>
+            {siteContent.whyChoose.map((item, index) => (
+              <motion.li
+                key={item.title}
+                {...fade}
+                transition={{ ...spring, delay: 0.24 + index * 0.1 }}
+                className="flex gap-3"
+              >
+                <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />
+                <span>
+                  <span className="font-medium text-foreground">
+                    {item.title}.{" "}
+                  </span>
+                  {item.description}
+                </span>
+              </motion.li>
+            ))}
           </ul>
         </div>
 
         <div className="grid gap-4">
-          {pillars.map((pillar) => {
-            const Icon = pillar.icon;
+          {siteContent.services.map((service, index) => {
+            const Icon = SERVICE_ICONS[index] ?? Wrench;
             return (
-              <div
-                key={pillar.label}
-                className="flex items-center gap-5 rounded-2xl border border-border bg-background/60 p-6 backdrop-blur"
+              <motion.div
+                key={service.title}
+                variants={fadeUp}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ ...springSoft, delay: index * 0.12 }}
+                className="flex items-start gap-5 rounded-2xl border border-border bg-background/60 p-6 will-change-transform backdrop-blur"
               >
                 <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
                   <Icon className="h-5 w-5" />
                 </span>
                 <div>
-                  <div className="text-2xl font-semibold">{pillar.stat}</div>
-                  <p className="text-sm text-foreground/60">{pillar.label}</p>
+                  <div className="text-lg font-semibold">{service.title}</div>
+                  <p className="mt-1 text-sm text-foreground/60">
+                    {service.description}
+                  </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

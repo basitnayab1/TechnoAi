@@ -42,6 +42,10 @@ const config: Config = {
         "fade-up": "fade-up 0.8s ease-out forwards",
         "gradient-shift": "gradient-shift 8s ease infinite",
         float: "float 6s ease-in-out infinite",
+        shimmer: "shimmer-wave 3.2s linear infinite",
+        "glow-pulse": "glow-pulse 2.4s ease-in-out infinite",
+        breathe: "hotspot-breathe 2.6s ease-in-out infinite",
+        "breathe-delayed": "hotspot-breathe 2.2s ease-in-out 0.45s infinite",
       },
       keyframes: {
         "fade-up": {
@@ -55,6 +59,18 @@ const config: Config = {
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-14px)" },
+        },
+        "shimmer-wave": {
+          "0%": { backgroundPosition: "0% center" },
+          "100%": { backgroundPosition: "200% center" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 18px 2px rgba(109, 91, 255, 0.35)" },
+          "50%": { boxShadow: "0 0 32px 8px rgba(0, 229, 199, 0.45)" },
+        },
+        "hotspot-breathe": {
+          "0%, 100%": { transform: "scale(1)", opacity: "0.35" },
+          "50%": { transform: "scale(1.42)", opacity: "0.9" },
         },
       },
       backgroundImage: {

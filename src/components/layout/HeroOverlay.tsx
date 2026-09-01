@@ -1,46 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Calendar,
-  Crosshair,
+  Globe2,
   Menu,
   Radar,
   RotateCcw,
   Sparkles,
   Workflow,
   X,
-  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { gsap } from "@/lib/gsap";
+import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { useExploreOptional } from "@/components/canvas/ExploreSequence";
+import { siteContent } from "@/lib/content";
 
-const NAV_LINKS = [
-  { label: "Solutions", href: "#solutions" },
-  { label: "Services", href: "#services" },
-  { label: "Products", href: "#products" },
-  { label: "Contact", href: "#contact" },
-] as const;
+const NAV_LINKS = siteContent.nav;
 
-const SPECS = [
-  {
-    icon: Crosshair,
-    value: "99.9%",
-    label: "Precision",
-  },
-  {
-    icon: Zap,
-    value: "Real-Time",
-    label: "Processing",
-  },
-  {
-    icon: Workflow,
-    value: "Multi-Agent",
-    label: "Systems",
-  },
-] as const;
+const SPEC_ICONS = [Globe2, Radar, Workflow] as const;
 
 function scrollToHash(hash: string) {
   const id = hash.replace("#", "");
@@ -60,7 +42,7 @@ export function HeroOverlay() {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex min-w-0 max-w-full flex-col overflow-x-clip">
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-full max-w-full bg-gradient-to-b from-[#030712]/80 via-[#030712]/45 to-[#030712]/75 lg:bg-gradient-to-r lg:from-[#030712]/85 lg:via-[#030712]/40 lg:to-transparent lg:w-[min(58%,40rem)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] w-full max-w-full bg-gradient-to-t from-[#030712]/90 via-[#030712]/55 to-transparent md:inset-y-0 md:left-0 md:top-0 md:h-full md:w-[min(58%,40rem)] md:bg-gradient-to-r md:from-[#030712]/85 md:via-[#030712]/40 md:to-transparent" />
 
       <OverlayNav
         menuOpen={menuOpen}
@@ -72,7 +54,7 @@ export function HeroOverlay() {
         }}
       />
 
-      <div className="relative flex min-h-0 min-w-0 flex-1 flex-col justify-between gap-6 overflow-x-clip overflow-y-auto px-4 pb-5 pt-[4.75rem] sm:gap-8 sm:px-6 sm:pb-8 sm:pt-24 lg:px-10 lg:pb-10 lg:pt-28">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-[55vh] min-h-0 min-w-0 flex-col justify-center gap-3 overflow-x-clip overflow-y-auto px-4 pb-4 pt-3 sm:gap-4 sm:px-5 sm:pb-5 md:relative md:h-auto md:flex-1 md:justify-between md:gap-6 md:px-6 md:pb-8 md:pt-24 lg:px-10 lg:pb-10 lg:pt-28">
         <HeroCopy
           onExploreMenuClose={() => setMenuOpen(false)}
           onBookDemo={() => setDemoOpen(true)}
@@ -80,7 +62,9 @@ export function HeroOverlay() {
         <SpecsRow />
       </div>
 
-      {demoOpen && <DemoPanel onClose={() => setDemoOpen(false)} />}
+      <AnimatePresence>
+        {demoOpen && <DemoPanel onClose={() => setDemoOpen(false)} />}
+      </AnimatePresence>
     </div>
   );
 }
@@ -96,8 +80,28 @@ function OverlayNav({
   onCloseMenu: () => void;
   onGetStarted: () => void;
 }) {
+  const headerRef = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el || reduce) return;
+
+    const tween = gsap.fromTo(
+      el,
+      { y: -18, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+    );
+    return () => {
+      tween.kill();
+    };
+  }, [reduce]);
+
   return (
-    <header className="absolute inset-x-0 top-0 z-30 w-full min-w-0 max-w-full px-3 pt-3 sm:px-6 sm:pt-4">
+    <header
+      ref={headerRef}
+      className="absolute inset-x-0 top-0 z-30 w-full min-w-0 max-w-full px-3 pt-3 sm:px-6 sm:pt-4"
+    >
       <div className="mx-auto flex w-full min-w-0 max-w-7xl items-center justify-between gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2.5 shadow-[0_8px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:gap-4 sm:px-5 sm:py-3">
         <a
           href="#top"
@@ -114,7 +118,7 @@ function OverlayNav({
             <Sparkles className="h-4 w-4" />
           </span>
           <span className="text-sm sm:text-base">
-            Techno<span className="text-primary-300">AI</span>
+            Techno<span className="text-primary-300">Ai</span>
           </span>
         </a>
 
@@ -144,10 +148,10 @@ function OverlayNav({
             onClick={onGetStarted}
             className={cn(
               interactive,
-              "hidden px-5 py-2 text-xs font-semibold uppercase tracking-[0.16em] shadow-[0_0_24px_rgba(109,91,255,0.55)] lg:inline-flex"
+              "hidden px-5 py-2 text-xs font-semibold uppercase tracking-[0.16em] shadow-[0_0_24px_rgba(109,91,255,0.55)] md:animate-glow-pulse lg:inline-flex"
             )}
           >
-            Get Started
+            {siteContent.hero.primaryCta}
           </Button>
           <button
             type="button"
@@ -164,39 +168,45 @@ function OverlayNav({
         </div>
       </div>
 
-      {menuOpen && (
-        <div
-          className={cn(
-            interactive,
-            "mx-auto mt-2 w-full max-w-7xl rounded-2xl border border-white/10 bg-[#030712]/90 p-4 backdrop-blur-xl lg:hidden"
-          )}
-        >
-          <div className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(event) => {
-                  event.preventDefault();
-                  onCloseMenu();
-                  scrollToHash(link.href);
-                }}
-                className="rounded-lg px-3 py-2.5 text-sm text-foreground/80 hover:bg-white/5"
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={springSoft}
+            className={cn(
+              interactive,
+              "mx-auto mt-2 w-full max-w-7xl rounded-2xl border border-white/10 bg-[#030712]/90 p-4 backdrop-blur-xl lg:hidden"
+            )}
+          >
+            <div className="flex flex-col gap-1">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onCloseMenu();
+                    scrollToHash(link.href);
+                  }}
+                  className="rounded-lg px-3 py-2.5 text-sm text-foreground/80 hover:bg-white/5"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <Button
+                type="button"
+                variant="primary"
+                onClick={onGetStarted}
+                className="mt-2 w-full uppercase tracking-[0.16em]"
               >
-                {link.label}
-              </a>
-            ))}
-            <Button
-              type="button"
-              variant="primary"
-              onClick={onGetStarted}
-              className="mt-2 w-full uppercase tracking-[0.16em]"
-            >
-              Get Started
-            </Button>
-          </div>
-        </div>
-      )}
+                {siteContent.hero.primaryCta}
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
@@ -209,6 +219,7 @@ function HeroCopy({
   onBookDemo: () => void;
 }) {
   const explore = useExploreOptional();
+  const { fade, spring } = useMotionPrefs();
   const state = explore?.state ?? "idle";
   const isBusy = explore?.isBusy ?? false;
   const isExploring = state === "exploring";
@@ -218,29 +229,47 @@ function HeroCopy({
       ? "Flying…"
       : isExploring
         ? "Reset View"
-        : "Explore AI Models";
+        : siteContent.hero.secondaryCta;
 
   return (
-    <div className="flex w-full min-w-0 max-w-xl flex-col items-start gap-4 sm:gap-6 lg:max-w-lg xl:max-w-xl">
-      <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-accent shadow-[0_0_18px_rgba(0,229,199,0.2)] sm:px-3 sm:text-[11px] sm:tracking-[0.22em]">
+    <div className="flex w-full min-w-0 max-w-xl flex-col items-start gap-2.5 sm:gap-4 md:gap-6 lg:max-w-lg xl:max-w-xl">
+      <motion.span
+        {...fade}
+        transition={{ ...spring, delay: 0.05 }}
+        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-accent shadow-[0_0_18px_rgba(0,229,199,0.2)] sm:gap-2 sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.14em] md:px-3 md:text-[11px] md:tracking-[0.22em]"
+      >
         <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-accent" />
-        <span className="truncate">Powering Next-Gen AI</span>
-      </span>
+        <span className="truncate">{siteContent.hero.eyebrow}</span>
+      </motion.span>
 
-      <h1 className="max-w-full text-balance break-words text-[1.75rem] font-semibold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]">
-        Transforming Businesses with{" "}
-        <span className="text-gradient animate-gradient-shift bg-[length:200%_auto]">
-          Intelligent AI Solutions
-        </span>
-      </h1>
+      <motion.h1
+        {...fade}
+        transition={{ ...spring, delay: 0.16 }}
+        className="text-shimmer max-w-full text-balance break-words text-xl font-semibold leading-[1.15] tracking-tight will-change-[background-position] sm:text-2xl sm:leading-[1.15] md:text-5xl md:leading-[1.12] lg:text-[3.25rem]"
+      >
+        {siteContent.hero.title} {siteContent.hero.titleAccent}
+      </motion.h1>
 
-      <p className="max-w-md text-pretty text-sm leading-relaxed text-foreground/65 sm:text-base">
-        TechnoAI is an AI solutions provider building foundation models,
-        multi-agent systems, and real-time inference — so enterprises can
-        deploy intelligence they can actually trust in production.
-      </p>
+      <motion.p
+        {...fade}
+        transition={{ ...spring, delay: 0.28 }}
+        className="max-w-full truncate text-pretty text-xs leading-snug text-foreground/65 sm:hidden"
+      >
+        {siteContent.hero.descriptionShort}
+      </motion.p>
+      <motion.p
+        {...fade}
+        transition={{ ...spring, delay: 0.28 }}
+        className="hidden max-w-md text-pretty text-sm leading-relaxed text-foreground/65 sm:block sm:text-base"
+      >
+        {siteContent.hero.description}
+      </motion.p>
 
-      <div className="flex w-full min-w-0 max-w-full flex-col gap-3 sm:max-w-md sm:flex-row">
+      <motion.div
+        {...fade}
+        transition={{ ...spring, delay: 0.4 }}
+        className="flex w-full min-w-0 max-w-full flex-col gap-2 sm:max-w-md sm:flex-row sm:gap-3"
+      >
         <Button
           type="button"
           variant={isExploring ? "secondary" : "primary"}
@@ -252,7 +281,7 @@ function HeroCopy({
           aria-busy={isBusy}
           className={cn(
             interactive,
-            "w-full min-w-0 px-5 py-3 text-sm shadow-[0_0_24px_rgba(109,91,255,0.4)] sm:w-auto sm:px-6"
+            "w-full min-w-0 px-4 py-2 text-xs shadow-[0_0_24px_rgba(109,91,255,0.4)] sm:w-auto sm:px-5 sm:py-2.5 sm:text-sm md:animate-glow-pulse md:px-6 md:py-3"
           )}
         >
           {isExploring ? (
@@ -268,39 +297,43 @@ function HeroCopy({
           onClick={onBookDemo}
           className={cn(
             interactive,
-            "w-full min-w-0 border-white/15 bg-white/5 px-5 py-3 text-sm backdrop-blur-md sm:w-auto sm:px-6"
+            "w-full min-w-0 border-white/15 bg-white/5 px-4 py-2 text-xs backdrop-blur-md sm:w-auto sm:px-5 sm:py-2.5 sm:text-sm md:px-6 md:py-3"
           )}
         >
           <Calendar className="h-4 w-4" />
-          Book Demo
+          {siteContent.hero.primaryCta}
         </Button>
-      </div>
+      </motion.div>
     </div>
   );
 }
 
 function SpecsRow() {
+  const { fade, spring } = useMotionPrefs();
+
   return (
-    <ul className="grid w-full min-w-0 max-w-xl grid-cols-1 gap-2 sm:grid-cols-3">
-      {SPECS.map((spec) => {
-        const Icon = spec.icon;
+    <ul className="grid w-full min-w-0 max-w-xl grid-cols-3 gap-1.5 sm:gap-2 md:gap-2.5">
+      {siteContent.hero.specs.map((spec, index) => {
+        const Icon = SPEC_ICONS[index] ?? Globe2;
         return (
-          <li
+          <motion.li
             key={spec.label}
-            className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3.5 py-3 backdrop-blur-xl"
+            {...fade}
+            transition={{ ...spring, delay: index * 0.2 }}
+            className="flex min-w-0 items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.04] px-2 py-1.5 backdrop-blur-xl will-change-transform sm:gap-2.5 sm:rounded-2xl sm:px-3 sm:py-2.5 md:gap-3 md:px-3.5 md:py-3"
           >
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary-300">
-              <Icon className="h-4 w-4" />
+            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary-300 sm:h-8 sm:w-8 md:h-9 md:w-9 md:rounded-xl">
+              <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
             </span>
             <span className="flex min-w-0 flex-col">
-              <span className="text-sm font-semibold leading-tight">
+              <span className="truncate text-[10px] font-semibold leading-tight sm:text-xs md:text-sm">
                 {spec.value}
               </span>
-              <span className="text-[11px] uppercase tracking-[0.14em] text-foreground/50">
+              <span className="truncate text-[8px] uppercase tracking-[0.08em] text-foreground/50 sm:text-[10px] sm:tracking-[0.1em] md:text-[11px] md:tracking-[0.14em]">
                 {spec.label}
               </span>
             </span>
-          </li>
+          </motion.li>
         );
       })}
     </ul>
@@ -309,16 +342,23 @@ function SpecsRow() {
 
 function DemoPanel({ onClose }: { onClose: () => void }) {
   return (
-    <div className="absolute inset-0 z-40 flex items-end justify-center p-4 sm:items-center">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 z-40 flex items-end justify-center p-4 sm:items-center"
+    >
       <button
         type="button"
         aria-label="Dismiss demo dialog"
         className={cn(interactive, "absolute inset-0 bg-[#030712]/50")}
         onClick={onClose}
       />
-      <div
+      <motion.div
         role="dialog"
         aria-labelledby="demo-title"
+        {...fadeUp}
+        transition={springSoft}
         className={cn(
           interactive,
           "relative w-full min-w-0 max-w-md rounded-3xl border border-white/10 bg-[#0b0d18]/90 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl sm:p-8"
@@ -333,24 +373,22 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
           <X className="h-4 w-4" />
         </button>
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
-          Book a demo
+          {siteContent.hero.primaryCta}
         </p>
         <h2 id="demo-title" className="mt-2 text-2xl font-semibold tracking-tight">
-          See TechnoAI in production
+          {siteContent.sections.cta.title}
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-foreground/60">
-          A 30-minute walkthrough of our models, agent orchestration, and a
-          deployment plan tailored to your stack. Most teams are live within
-          a week.
+          {siteContent.sections.cta.description}
         </p>
         <a
-          href="mailto:sales@technoai.com?subject=Demo%20request"
+          href="mailto:info@technoai.ae?subject=Project%20inquiry"
           className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-white shadow-[0_0_24px_rgba(109,91,255,0.45)] transition-colors hover:bg-primary-600"
         >
-          Email sales@technoai.com
+          Email info@technoai.ae
           <ArrowRight className="h-4 w-4" />
         </a>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
