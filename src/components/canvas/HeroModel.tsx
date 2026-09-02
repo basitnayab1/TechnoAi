@@ -184,8 +184,8 @@ function Hotspot({
             document.body.style.cursor = "auto";
           }}
           className={cn(
-            "relative flex h-7 w-7 select-none items-center justify-center rounded-full border font-mono text-[10px] font-semibold tracking-wide backdrop-blur-sm transition-all duration-300 ease-out sm:h-8 sm:w-8 sm:text-[10.5px] md:h-9 md:w-9 md:text-[11px]",
-            "border-accent/50 bg-black/50 text-accent/90",
+            "relative flex h-7 w-7 select-none items-center justify-center rounded-full border font-mono text-xs font-bold tracking-widest text-cyan-300 backdrop-blur-sm transition-all duration-300 ease-out sm:h-8 sm:w-8 md:h-9 md:w-9 lg:text-sm",
+            "border-accent/50 bg-black/50",
             "shadow-[0_0_12px_2px_rgba(0,229,199,0.35)]",
             highlighted &&
               "scale-125 border-accent bg-accent/20 text-white shadow-[0_0_26px_6px_rgba(0,229,199,0.8)]"
@@ -230,7 +230,7 @@ function Hotspot({
             >
               <X className="h-3 w-3" />
             </button>
-            <p className="text-[9px] font-mono uppercase tracking-[0.16em] text-accent sm:text-[10px] sm:tracking-[0.2em]">
+            <p className="font-mono text-xs font-bold tracking-widest text-cyan-300 lg:text-sm">
               {hotspot.code}
             </p>
             <h4 className="mt-1 pr-4 text-xs font-semibold leading-snug text-white sm:text-sm">

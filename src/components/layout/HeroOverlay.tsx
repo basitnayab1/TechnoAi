@@ -236,7 +236,7 @@ function HeroCopy({
       <motion.span
         {...fade}
         transition={{ ...spring, delay: 0.05 }}
-        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-accent shadow-[0_0_18px_rgba(0,229,199,0.2)] sm:gap-2 sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-[0.14em] md:px-3 md:text-[11px] md:tracking-[0.22em]"
+        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400 shadow-[0_0_18px_rgba(0,229,199,0.2)] sm:gap-2 sm:px-2.5 sm:py-1 md:px-3"
       >
         <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-accent" />
         <span className="truncate">{siteContent.hero.eyebrow}</span>
@@ -245,7 +245,7 @@ function HeroCopy({
       <motion.h1
         {...fade}
         transition={{ ...spring, delay: 0.16 }}
-        className="text-shimmer max-w-full text-balance break-words text-xl font-semibold leading-[1.15] tracking-tight will-change-[background-position] sm:text-2xl sm:leading-[1.15] md:text-5xl md:leading-[1.12] lg:text-[3.25rem]"
+        className="max-w-full text-balance break-words text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl md:font-extrabold md:leading-[1.15] lg:text-6xl"
       >
         {siteContent.hero.title} {siteContent.hero.titleAccent}
       </motion.h1>
@@ -253,14 +253,14 @@ function HeroCopy({
       <motion.p
         {...fade}
         transition={{ ...spring, delay: 0.28 }}
-        className="max-w-full truncate text-pretty text-xs leading-snug text-foreground/65 sm:hidden"
+        className="max-w-full truncate text-pretty text-xs leading-snug text-slate-400 sm:hidden sm:text-sm"
       >
         {siteContent.hero.descriptionShort}
       </motion.p>
       <motion.p
         {...fade}
         transition={{ ...spring, delay: 0.28 }}
-        className="hidden max-w-md text-pretty text-sm leading-relaxed text-foreground/65 sm:block sm:text-base"
+        className="hidden max-w-xl text-pretty text-base leading-relaxed text-slate-300 sm:block lg:text-lg"
       >
         {siteContent.hero.description}
       </motion.p>
@@ -281,7 +281,7 @@ function HeroCopy({
           aria-busy={isBusy}
           className={cn(
             interactive,
-            "w-full min-w-0 px-4 py-2 text-xs shadow-[0_0_24px_rgba(109,91,255,0.4)] sm:w-auto sm:px-5 sm:py-2.5 sm:text-sm md:animate-glow-pulse md:px-6 md:py-3"
+            "w-full min-w-0 px-5 py-3 text-xs font-semibold tracking-wide shadow-[0_0_24px_rgba(109,91,255,0.4)] sm:w-auto sm:text-sm md:animate-glow-pulse"
           )}
         >
           {isExploring ? (
@@ -297,7 +297,7 @@ function HeroCopy({
           onClick={onBookDemo}
           className={cn(
             interactive,
-            "w-full min-w-0 border-white/15 bg-white/5 px-4 py-2 text-xs backdrop-blur-md sm:w-auto sm:px-5 sm:py-2.5 sm:text-sm md:px-6 md:py-3"
+            "w-full min-w-0 border-white/15 bg-white/5 px-5 py-3 text-xs font-semibold tracking-wide backdrop-blur-md sm:w-auto sm:text-sm"
           )}
         >
           <Calendar className="h-4 w-4" />
@@ -326,7 +326,7 @@ function SpecsRow() {
               <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
             </span>
             <span className="flex min-w-0 flex-col">
-              <span className="truncate text-[10px] font-semibold leading-tight sm:text-xs md:text-sm">
+              <span className="truncate font-mono text-xs font-bold tracking-widest text-cyan-300 lg:text-sm">
                 {spec.value}
               </span>
               <span className="truncate text-[8px] uppercase tracking-[0.08em] text-foreground/50 sm:text-[10px] sm:tracking-[0.1em] md:text-[11px] md:tracking-[0.14em]">
