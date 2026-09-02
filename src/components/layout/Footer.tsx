@@ -14,7 +14,7 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer id="contact" className="border-t border-border bg-surface">
+    <footer id="contact" className="border-t border-slate-800/80 bg-[#0b0f17]">
       <Container className="grid min-w-0 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <motion.div
           variants={fadeUp}
@@ -54,7 +54,7 @@ export function Footer() {
               <a
                 key={i}
                 href={i === 0 ? "mailto:info@technoai.ae" : "https://technoai.ae/"}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/60 transition-colors hover:border-primary/40 hover:text-primary-300"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-800/80 bg-[#0b0f17]/70 text-foreground/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.15)]"
               >
                 <Icon className="h-4 w-4" />
               </a>

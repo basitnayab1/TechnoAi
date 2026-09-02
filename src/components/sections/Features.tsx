@@ -14,6 +14,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { fadeUp, springSoft } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
+import { cn, glassHover, glassPad, glassPanel } from "@/lib/utils";
 
 const FEATURE_ICONS: LucideIcon[] = [
   Banknote,
@@ -47,7 +48,12 @@ function FeatureCard({
       viewport={{ once: true, amount: 0.25 }}
       transition={{ ...springSoft, delay: index * 0.12 }}
       whileHover={reduce ? undefined : { y: -6, scale: 1.02 }}
-      className="group relative flex min-w-0 flex-col gap-4 rounded-2xl border border-border bg-surface p-6 will-change-transform hover:border-primary/40"
+      className={cn(
+        glassPanel,
+        glassHover,
+        glassPad,
+        "group relative flex min-w-0 flex-col gap-4 will-change-transform"
+      )}
     >
       <div className="flex items-center justify-between gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary-300 transition-colors group-hover:bg-primary/20">

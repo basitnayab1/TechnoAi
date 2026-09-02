@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { fadeUp, springSoft } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
+import { cn, glassPad, glassPanel } from "@/lib/utils";
 
 export function CTA() {
   const { title, description, primaryCta, secondaryCta } =
@@ -20,7 +21,11 @@ export function CTA() {
           whileInView="animate"
           viewport={{ once: true, amount: 0.35 }}
           transition={springSoft}
-          className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/20 via-surface to-surface p-10 text-center sm:p-16"
+          className={cn(
+            glassPanel,
+            glassPad,
+            "relative overflow-hidden text-center md:p-16"
+          )}
         >
           <div className="absolute inset-0 bg-radial-fade" />
           <div className="relative z-10 flex flex-col items-center gap-6">

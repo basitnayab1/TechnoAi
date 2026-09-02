@@ -14,6 +14,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
+import { cn, glassHover, glassPad, glassPanel } from "@/lib/utils";
 
 const SERVICE_ICONS: LucideIcon[] = [
   Wallet,
@@ -30,7 +31,7 @@ export function About() {
 
   return (
     <section id="services" className="relative scroll-mt-8 overflow-hidden py-24 sm:py-32">
-      <div className="absolute inset-0 bg-surface" />
+      <div className="absolute inset-0 bg-[#0b0f17]" />
       <div className="absolute inset-0 bg-radial-fade opacity-60" />
 
       <Container className="relative z-10 grid gap-16 lg:grid-cols-2 lg:items-start">
@@ -79,7 +80,12 @@ export function About() {
                 whileInView="animate"
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ ...springSoft, delay: index * 0.12 }}
-                className="flex items-start gap-5 rounded-2xl border border-border bg-background/60 p-6 will-change-transform backdrop-blur"
+                className={cn(
+                  glassPanel,
+                  glassHover,
+                  glassPad,
+                  "flex items-start gap-4 will-change-transform sm:gap-5"
+                )}
               >
                 <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent">
                   <Icon className="h-5 w-5" />

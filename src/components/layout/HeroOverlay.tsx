@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
+import { cn, glassHover, glassPad, glassPanel } from "@/lib/utils";
 import { gsap } from "@/lib/gsap";
 import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { useExploreOptional } from "@/components/canvas/ExploreSequence";
@@ -42,7 +42,7 @@ export function HeroOverlay() {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex min-w-0 max-w-full flex-col overflow-x-clip">
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] w-full max-w-full bg-gradient-to-t from-[#030712]/90 via-[#030712]/55 to-transparent md:inset-y-0 md:left-0 md:top-0 md:h-full md:w-[min(58%,40rem)] md:bg-gradient-to-r md:from-[#030712]/85 md:via-[#030712]/40 md:to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] w-full max-w-full bg-gradient-to-t from-[#0b0f17]/90 via-[#0b0f17]/55 to-transparent md:inset-y-0 md:left-0 md:top-0 md:h-full md:w-[min(58%,40rem)] md:bg-gradient-to-r md:from-[#0b0f17]/85 md:via-[#0b0f17]/40 md:to-transparent" />
 
       <OverlayNav
         menuOpen={menuOpen}
@@ -102,7 +102,7 @@ function OverlayNav({
       ref={headerRef}
       className="absolute inset-x-0 top-0 z-30 w-full min-w-0 max-w-full px-3 pt-3 sm:px-6 sm:pt-4"
     >
-      <div className="mx-auto flex w-full min-w-0 max-w-7xl items-center justify-between gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2.5 shadow-[0_8px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:gap-4 sm:px-5 sm:py-3">
+      <div className={cn(glassPanel, "mx-auto flex w-full min-w-0 max-w-7xl items-center justify-between gap-2 px-3 py-2.5 sm:gap-4 sm:px-5 sm:py-3")}>
         <a
           href="#top"
           onClick={(event) => {
@@ -177,7 +177,9 @@ function OverlayNav({
             transition={springSoft}
             className={cn(
               interactive,
-              "mx-auto mt-2 w-full max-w-7xl rounded-2xl border border-white/10 bg-[#030712]/90 p-4 backdrop-blur-xl lg:hidden"
+              glassPanel,
+              glassPad,
+              "mx-auto mt-2 w-full max-w-7xl lg:hidden"
             )}
           >
             <div className="flex flex-col gap-1">
@@ -236,7 +238,7 @@ function HeroCopy({
       <motion.span
         {...fade}
         transition={{ ...spring, delay: 0.05 }}
-        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400 shadow-[0_0_18px_rgba(0,229,199,0.2)] sm:gap-2 sm:px-2.5 sm:py-1 md:px-3"
+        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-700/50 bg-slate-900/60 px-4 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md sm:gap-2"
       >
         <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-accent" />
         <span className="truncate">{siteContent.hero.eyebrow}</span>
@@ -320,7 +322,13 @@ function SpecsRow() {
             key={spec.label}
             {...fade}
             transition={{ ...spring, delay: index * 0.2 }}
-            className="flex min-w-0 items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.04] px-2 py-1.5 backdrop-blur-xl will-change-transform sm:gap-2.5 sm:rounded-2xl sm:px-3 sm:py-2.5 md:gap-3 md:px-3.5 md:py-3"
+            className={cn(
+              interactive,
+              glassPanel,
+              glassHover,
+              glassPad,
+              "flex min-w-0 items-center gap-1.5 will-change-transform sm:gap-2.5 md:gap-3"
+            )}
           >
             <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary-300 sm:h-8 sm:w-8 md:h-9 md:w-9 md:rounded-xl">
               <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
@@ -361,7 +369,9 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
         transition={springSoft}
         className={cn(
           interactive,
-          "relative w-full min-w-0 max-w-md rounded-3xl border border-white/10 bg-[#0b0d18]/90 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.5)] backdrop-blur-2xl sm:p-8"
+          glassPanel,
+          glassPad,
+          "relative w-full min-w-0 max-w-md md:p-8"
         )}
       >
         <button

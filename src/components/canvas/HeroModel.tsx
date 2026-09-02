@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { Float, Html, useGLTF } from "@react-three/drei";
 import { Box3, MathUtils, Vector3, type Group } from "three";
 import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, glassHover, glassPad, glassPanel } from "@/lib/utils";
 import { siteContent } from "@/lib/content";
 import { useExploreOptional } from "./ExploreSequence";
 import { HERO_PLACEMENT, useCompactScene } from "./useCompactScene";
@@ -184,26 +184,17 @@ function Hotspot({
             document.body.style.cursor = "auto";
           }}
           className={cn(
-            "relative flex h-7 w-7 select-none items-center justify-center rounded-full border font-mono text-xs font-bold tracking-widest text-cyan-300 backdrop-blur-sm transition-all duration-300 ease-out sm:h-8 sm:w-8 md:h-9 md:w-9 lg:text-sm",
-            "border-accent/50 bg-black/50",
-            "shadow-[0_0_12px_2px_rgba(0,229,199,0.35)]",
+            "relative flex h-8 w-8 select-none items-center justify-center rounded-full border border-cyan-400/60 bg-black/40 font-mono text-xs font-bold tracking-widest text-cyan-300 backdrop-blur-sm transition-all duration-300 ease-out lg:text-sm",
+            "shadow-[0_0_12px_2px_rgba(0,240,255,0.25)]",
             highlighted &&
-              "scale-125 border-accent bg-accent/20 text-white shadow-[0_0_26px_6px_rgba(0,229,199,0.8)]"
+              "scale-125 border-cyan-400 bg-cyan-400/20 text-white shadow-[0_0_26px_6px_rgba(0,240,255,0.55)]"
           )}
         >
           <span
             className={cn(
-              "pointer-events-none absolute -inset-3 rounded-full border border-accent/25 will-change-transform animate-breathe",
+              "pointer-events-none absolute -inset-1 rounded-full border border-cyan-400/30 animate-ping",
               isActive && "pause-anim"
             )}
-            style={{ animationDelay: `${Number(hotspot.code) * 0.28}s` }}
-          />
-          <span
-            className={cn(
-              "pointer-events-none absolute -inset-1.5 rounded-full border border-accent/55 will-change-transform animate-breathe-delayed",
-              isActive && "pause-anim"
-            )}
-            style={{ animationDelay: `${Number(hotspot.code) * 0.28 + 0.35}s` }}
           />
           <span className="relative">{hotspot.code}</span>
         </button>
@@ -213,7 +204,10 @@ function Hotspot({
             role="dialog"
             aria-label={hotspot.title}
             className={cn(
-              "pointer-events-auto absolute left-1/2 z-50 w-40 max-w-[65vw] -translate-x-1/2 animate-fade-up rounded-xl border border-white/10 bg-white/[0.06] p-2.5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:w-52 sm:max-w-[60vw] sm:rounded-2xl sm:p-3.5 md:w-56 md:p-4",
+              glassPanel,
+              glassHover,
+              glassPad,
+              "pointer-events-auto absolute left-1/2 z-50 w-44 max-w-[65vw] -translate-x-1/2 animate-fade-up text-left sm:w-52 sm:max-w-[60vw] md:w-56",
               hotspot.cardPlacement === "up"
                 ? "bottom-full mb-3"
                 : "top-full mt-3"

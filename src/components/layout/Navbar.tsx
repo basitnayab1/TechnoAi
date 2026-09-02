@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Sparkles, Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
+import { cn, glassPanel } from "@/lib/utils";
 import { siteContent } from "@/lib/content";
 
 const links = siteContent.nav;
@@ -25,7 +25,7 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-lg"
+          ? cn(glassPanel, "rounded-none border-x-0 border-t-0")
           : "border-b border-transparent"
       )}
     >
@@ -67,7 +67,7 @@ export function Navbar() {
       </Container>
 
       {open && (
-        <div className="border-t border-border bg-background/95 backdrop-blur-lg md:hidden">
+        <div className={cn(glassPanel, "rounded-none border-x-0 border-b-0 md:hidden")}>
           <Container className="flex flex-col gap-4 py-6">
             {links.map((link) => (
               <a
