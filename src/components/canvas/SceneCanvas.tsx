@@ -121,17 +121,17 @@ export function SceneCanvas({
           <Ground />
 
           <Sparkles
-            count={compact ? 70 : 220}
+            count={compact ? 50 : 120}
             scale={[20, 10, 20]}
             size={compact ? 1.6 : 2.2}
             speed={0.3}
-            opacity={0.6}
+            opacity={0.45}
             color="#8a6fff"
           />
           <Stars
             radius={60}
             depth={40}
-            count={compact ? 600 : 2800}
+            count={compact ? 220 : 900}
             factor={compact ? 2.2 : 3}
             saturation={0}
             fade
@@ -177,7 +177,7 @@ export function SceneCanvas({
           </Canvas>
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] mix-blend-overlay"
+            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem]"
           />
         </div>
 
