@@ -31,7 +31,7 @@ export function About() {
 
   return (
     <section id="services" className="relative scroll-mt-8 overflow-hidden py-24 sm:py-32">
-      <div className="absolute inset-0 bg-[#0b0f17]" />
+      <div className="absolute inset-0 bg-[#0b0f17]/55" />
       <div className="absolute inset-0 bg-radial-fade opacity-60" />
 
       <Container className="relative z-10 grid gap-16 lg:grid-cols-2 lg:items-start">

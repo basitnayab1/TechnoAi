@@ -14,7 +14,7 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer id="contact" className="border-t border-slate-800/80 bg-[#0b0f17]">
+    <footer id="contact" className="border-t border-slate-800/80 bg-[#0b0f17]/75">
       <Container className="grid min-w-0 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <motion.div
           variants={fadeUp}

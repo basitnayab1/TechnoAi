@@ -40,7 +40,7 @@ export function Navbar() {
             setOpen(false);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="flex items-center gap-2 justify-self-start font-extrabold text-xl tracking-tight text-white"
+          className="flex items-center gap-2 justify-self-start whitespace-nowrap font-extrabold text-lg tracking-tight text-white sm:text-xl"
         >
           <Sparkles className="h-6 w-6 shrink-0 animate-pulse text-cyan-400" />
           <span>TechnoAI</span>

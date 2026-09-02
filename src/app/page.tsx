@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { AmbientBackdrop } from "@/components/layout/AmbientBackdrop";
 import { Footer } from "@/components/layout/Footer";
 import { HeroOverlay } from "@/components/layout/HeroOverlay";
 import { Navbar } from "@/components/layout/Navbar";
@@ -11,7 +12,7 @@ const SceneCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-full w-full bg-[#030712]" aria-hidden />
+      <div className="h-full w-full bg-transparent" aria-hidden />
     ),
   }
 );
@@ -23,28 +24,31 @@ const HeroModel = dynamic(
 
 export default function Home() {
   return (
-    <div className="w-full min-w-0 max-w-full overflow-x-clip">
-      <Navbar />
-      <section
-        id="top"
-        className="relative h-[100dvh] w-full min-w-0 max-w-full overflow-hidden"
-      >
-        <SceneCanvas
-          className="absolute inset-0 h-full w-full"
-          enableZoom={false}
-          overlay={<HeroOverlay />}
+    <div className="relative w-full min-w-0 max-w-full overflow-x-hidden">
+      <AmbientBackdrop />
+      <div className="relative z-10 w-full min-w-0 max-w-full overflow-x-hidden">
+        <Navbar />
+        <section
+          id="top"
+          className="relative h-[100dvh] w-full min-w-0 max-w-full overflow-hidden"
         >
-          <HeroModel />
-        </SceneCanvas>
-      </section>
+          <SceneCanvas
+            className="absolute inset-0 h-full w-full"
+            enableZoom={false}
+            overlay={<HeroOverlay />}
+          >
+            <HeroModel />
+          </SceneCanvas>
+        </section>
 
-      <main className="w-full min-w-0 max-w-full overflow-x-clip">
-        <Features />
-        <About />
-        <CTA />
-      </main>
+        <main className="w-full min-w-0 max-w-full overflow-x-hidden">
+          <Features />
+          <About />
+          <CTA />
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }

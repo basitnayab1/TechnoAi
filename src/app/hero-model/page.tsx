@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { AmbientBackdrop } from "@/components/layout/AmbientBackdrop";
 import { HeroOverlay } from "@/components/layout/HeroOverlay";
 import { Navbar } from "@/components/layout/Navbar";
 
@@ -15,7 +16,8 @@ const HeroModel = dynamic(
 
 export default function HeroModelDemoPage() {
   return (
-    <main className="relative h-screen w-full overflow-hidden bg-[#030712]">
+    <main className="relative h-screen w-full overflow-x-hidden overflow-hidden bg-transparent">
+      <AmbientBackdrop />
       <Navbar />
       <div className="absolute inset-0 z-0 h-full w-full">
         <SceneCanvas className="h-full w-full">

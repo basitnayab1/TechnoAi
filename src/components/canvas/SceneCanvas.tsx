@@ -25,8 +25,6 @@ import {
 } from "./ExploreSequence";
 import { useCompactScene } from "./useCompactScene";
 
-const BACKDROP_COLOR = "#030712";
-
 interface SceneCanvasProps {
   /** 3D subject rendered inside the studio. Falls back to a demo AI orb. */
   children?: ReactNode;
@@ -66,8 +64,7 @@ export function SceneCanvas({
        * full-bleed split look — see HeroOverlay.tsx.
        */}
       <div
-        className={`relative flex h-full w-full min-w-0 flex-col overflow-hidden ${className ?? ""}`}
-        style={{ background: BACKDROP_COLOR }}
+        className={`relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-transparent ${className ?? ""}`}
       >
         {/* Canvas wrapper: relative, full width, h-[45vh] on mobile so the
          * drone stays fully visible above the text panel; h-screen on
@@ -75,21 +72,24 @@ export function SceneCanvas({
         <div className="relative h-[45vh] w-full md:h-screen">
           <Canvas
             shadows={!compact}
-            dpr={compact ? [1, 1.25] : [1, 1.75]}
+            dpr={compact ? [1, 1.25] : [1, 2]}
             camera={{
               position: compact ? [0, 0, 5] : [0, 2.2, 8],
               fov: compact ? 60 : 45,
             }}
             gl={{
-              antialias: !compact,
-              alpha: false,
+              antialias: true,
+              alpha: true,
+              premultipliedAlpha: true,
               powerPreference: compact ? "low-power" : "high-performance",
             }}
-            className="absolute inset-0 block h-full w-full touch-none"
-            style={{ width: "100%", height: "100%" }}
+            onCreated={({ gl }) => {
+              gl.setClearColor(0x000000, 0);
+            }}
+            className="absolute inset-0 block h-full w-full touch-none bg-transparent"
+            style={{ width: "100%", height: "100%", background: "transparent" }}
           >
-          <color attach="background" args={[BACKDROP_COLOR]} />
-          <fog attach="fog" args={[BACKDROP_COLOR, compact ? 8 : 10, 32]} />
+          <fog attach="fog" args={["#030712", compact ? 14 : 18, 40]} />
 
           <ambientLight intensity={0.35} color="#8892b0" />
           <directionalLight
@@ -172,9 +172,13 @@ export function SceneCanvas({
               radialModulation={false}
               modulationOffset={0}
             />
-            <Vignette eskil={false} offset={0.28} darkness={0.85} />
+            <Vignette eskil={false} offset={0.4} darkness={0.45} />
           </EffectComposer>
           </Canvas>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem] mix-blend-overlay"
+          />
         </div>
 
         {overlay}
@@ -216,7 +220,7 @@ function Ground() {
   return (
     <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.5, 0]}>
       <planeGeometry args={[80, 80]} />
-      <meshStandardMaterial color="#05070d" metalness={0.25} roughness={0.85} />
+      <shadowMaterial transparent opacity={0.32} />
     </mesh>
   );
 }
