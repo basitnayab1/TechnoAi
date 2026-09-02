@@ -28,3 +28,15 @@ export const ctaPrimary =
 /** Dark glass outline secondary CTA. */
 export const ctaSecondary =
   "bg-slate-900/40 hover:bg-slate-800/60 text-slate-200 border border-slate-700/80 hover:border-cyan-500/60 backdrop-blur-md";
+
+/** Full-width fixed header bar matching technoai.ae. */
+export const navBarShell =
+  "fixed top-0 left-0 right-0 z-50 px-4 py-4 sm:px-8 bg-[#030712]/80 backdrop-blur-xl border-b border-slate-800/60 transition-all duration-300";
+
+/** Desktop header links. */
+export const navLink =
+  "text-sm font-medium tracking-wide text-slate-300 transition-colors duration-200 hover:text-cyan-400";
+
+/** Header 'START A PROJECT' pill. */
+export const navCta =
+  "rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all hover:from-blue-500 hover:to-cyan-400 hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]";

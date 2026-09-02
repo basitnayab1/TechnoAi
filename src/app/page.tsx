@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { Footer } from "@/components/layout/Footer";
 import { HeroOverlay } from "@/components/layout/HeroOverlay";
+import { Navbar } from "@/components/layout/Navbar";
 import { Features } from "@/components/sections/Features";
 import { About } from "@/components/sections/About";
 import { CTA } from "@/components/sections/CTA";
@@ -23,6 +24,7 @@ const HeroModel = dynamic(
 export default function Home() {
   return (
     <div className="w-full min-w-0 max-w-full overflow-x-clip">
+      <Navbar />
       <section
         id="top"
         className="relative h-[100dvh] w-full min-w-0 max-w-full overflow-hidden"

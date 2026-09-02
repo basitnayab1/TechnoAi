@@ -1,15 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Calendar,
   Globe2,
-  Menu,
   Radar,
   RotateCcw,
-  Sparkles,
   Workflow,
   X,
 } from "lucide-react";
@@ -23,19 +21,12 @@ import {
   glassPad,
   glassPanel,
 } from "@/lib/utils";
-import { gsap } from "@/lib/gsap";
 import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { useExploreOptional } from "@/components/canvas/ExploreSequence";
+import { BOOK_DEMO_EVENT } from "@/components/layout/Navbar";
 import { siteContent } from "@/lib/content";
 
-const NAV_LINKS = siteContent.nav;
-
 const SPEC_ICONS = [Globe2, Radar, Workflow] as const;
-
-function scrollToHash(hash: string) {
-  const id = hash.replace("#", "");
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-}
 
 const interactive = "pointer-events-auto";
 
@@ -56,28 +47,20 @@ function ButtonShine() {
  * back in with `pointer-events-auto`.
  */
 export function HeroOverlay() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [demoOpen, setDemoOpen] = useState(false);
+
+  useEffect(() => {
+    const openDemo = () => setDemoOpen(true);
+    window.addEventListener(BOOK_DEMO_EVENT, openDemo);
+    return () => window.removeEventListener(BOOK_DEMO_EVENT, openDemo);
+  }, []);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex min-w-0 max-w-full flex-col overflow-x-clip">
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] w-full max-w-full bg-gradient-to-t from-[#0b0f17]/90 via-[#0b0f17]/55 to-transparent md:inset-y-0 md:left-0 md:top-0 md:h-full md:w-[min(58%,40rem)] md:bg-gradient-to-r md:from-[#0b0f17]/85 md:via-[#0b0f17]/40 md:to-transparent" />
 
-      <OverlayNav
-        menuOpen={menuOpen}
-        onToggleMenu={() => setMenuOpen((v) => !v)}
-        onCloseMenu={() => setMenuOpen(false)}
-        onGetStarted={() => {
-          setMenuOpen(false);
-          setDemoOpen(true);
-        }}
-      />
-
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-[55vh] min-h-0 min-w-0 flex-col justify-center gap-3 overflow-x-clip overflow-y-auto px-4 pb-4 pt-3 sm:gap-4 sm:px-5 sm:pb-5 md:relative md:h-auto md:flex-1 md:justify-between md:gap-6 md:px-6 md:pb-8 md:pt-24 lg:px-10 lg:pb-10 lg:pt-28">
-        <HeroCopy
-          onExploreMenuClose={() => setMenuOpen(false)}
-          onBookDemo={() => setDemoOpen(true)}
-        />
+        <HeroCopy onBookDemo={() => setDemoOpen(true)} />
         <SpecsRow />
       </div>
 
@@ -88,164 +71,9 @@ export function HeroOverlay() {
   );
 }
 
-function OverlayNav({
-  menuOpen,
-  onToggleMenu,
-  onCloseMenu,
-  onGetStarted,
-}: {
-  menuOpen: boolean;
-  onToggleMenu: () => void;
-  onCloseMenu: () => void;
-  onGetStarted: () => void;
-}) {
-  const headerRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-
-  useEffect(() => {
-    const el = headerRef.current;
-    if (!el || reduce) return;
-
-    const tween = gsap.fromTo(
-      el,
-      { y: -18, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
-    );
-    return () => {
-      tween.kill();
-    };
-  }, [reduce]);
-
-  return (
-    <header
-      ref={headerRef}
-      className="absolute inset-x-0 top-0 z-30 w-full min-w-0 max-w-full px-3 pt-3 sm:px-6 sm:pt-4"
-    >
-      <div className={cn(glassPanel, "mx-auto flex w-full min-w-0 max-w-7xl items-center justify-between gap-2 px-3 py-2.5 sm:gap-4 sm:px-5 sm:py-3")}>
-        <a
-          href="#top"
-          onClick={(event) => {
-            event.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className={cn(
-            interactive,
-            "flex min-w-0 shrink items-center gap-2 font-semibold tracking-tight sm:gap-2.5"
-          )}
-        >
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20 text-primary-300 shadow-[0_0_16px_rgba(109,91,255,0.45)]">
-            <Sparkles className="h-4 w-4" />
-          </span>
-          <span className="text-sm sm:text-base">
-            Techno<span className="text-primary-300">Ai</span>
-          </span>
-        </a>
-
-        <nav className="hidden min-w-0 items-center gap-5 lg:flex xl:gap-7">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(event) => {
-                event.preventDefault();
-                scrollToHash(link.href);
-              }}
-              className={cn(
-                interactive,
-                "text-sm text-foreground/70 transition-colors hover:text-foreground"
-              )}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={onGetStarted}
-            className={cn(
-              interactive,
-              ctaMotion,
-              ctaSecondary,
-              "hidden px-5 py-2 text-xs uppercase tracking-[0.16em] lg:inline-flex"
-            )}
-          >
-            {siteContent.hero.primaryCta}
-          </Button>
-          <button
-            type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={onToggleMenu}
-            className={cn(
-              interactive,
-              ctaMotion,
-              ctaSecondary,
-              "flex h-9 w-9 shrink-0 items-center justify-center lg:hidden"
-            )}
-          >
-            {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={springSoft}
-            className={cn(
-              interactive,
-              glassPanel,
-              glassPad,
-              "mx-auto mt-2 w-full max-w-7xl lg:hidden"
-            )}
-          >
-            <div className="flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    onCloseMenu();
-                    scrollToHash(link.href);
-                  }}
-                  className="rounded-lg px-3 py-2.5 text-sm text-foreground/80 hover:bg-white/5"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={onGetStarted}
-                className={cn(
-                  interactive,
-                  ctaMotion,
-                  ctaSecondary,
-                  "mt-2 w-full uppercase tracking-[0.16em]"
-                )}
-              >
-                {siteContent.hero.primaryCta}
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
-}
-
 function HeroCopy({
-  onExploreMenuClose,
   onBookDemo,
 }: {
-  onExploreMenuClose: () => void;
   onBookDemo: () => void;
 }) {
   const explore = useExploreOptional();
@@ -313,7 +141,6 @@ function HeroCopy({
           variant={isExploring ? "secondary" : "primary"}
           disabled={isBusy}
           onClick={() => {
-            onExploreMenuClose();
             explore?.trigger();
           }}
           aria-busy={isBusy}
@@ -400,7 +227,7 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 z-40 flex items-end justify-center p-4 sm:items-center"
+      className="absolute inset-0 z-[60] flex items-end justify-center p-4 sm:items-center"
     >
       <button
         type="button"

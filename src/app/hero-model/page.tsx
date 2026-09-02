@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { HeroOverlay } from "@/components/layout/HeroOverlay";
+import { Navbar } from "@/components/layout/Navbar";
 
 const SceneCanvas = dynamic(
   () => import("@/components/canvas/SceneCanvas").then((mod) => mod.SceneCanvas),
@@ -15,6 +16,7 @@ const HeroModel = dynamic(
 export default function HeroModelDemoPage() {
   return (
     <main className="relative h-screen w-full overflow-hidden bg-[#030712]">
+      <Navbar />
       <div className="absolute inset-0 z-0 h-full w-full">
         <SceneCanvas className="h-full w-full">
           <HeroModel />
