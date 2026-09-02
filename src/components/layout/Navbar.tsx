@@ -32,7 +32,7 @@ export function Navbar() {
 
   return (
     <header className={navBarShell}>
-      <div className="relative mx-auto flex w-full min-w-0 max-w-7xl items-center justify-between gap-3">
+      <div className="mx-auto grid w-full min-w-0 max-w-7xl grid-cols-[1fr_auto] items-center gap-3 md:grid-cols-3">
         <a
           href="#top"
           onClick={(event) => {
@@ -40,13 +40,13 @@ export function Navbar() {
             setOpen(false);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="flex items-center gap-2 font-extrabold text-xl tracking-tight text-white"
+          className="flex items-center gap-2 justify-self-start font-extrabold text-xl tracking-tight text-white"
         >
           <Sparkles className="h-6 w-6 shrink-0 animate-pulse text-cyan-400" />
           <span>TechnoAI</span>
         </a>
 
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
+        <nav className="hidden items-center justify-center gap-8 justify-self-center md:flex">
           {links.map((link) => (
             <a
               key={link.href}
@@ -62,7 +62,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-end gap-2 justify-self-end">
           <button
             type="button"
             onClick={onCta}
