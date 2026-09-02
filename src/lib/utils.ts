@@ -16,3 +16,15 @@ export const glassHover =
 
 /** Compact card padding that stays sleek on small viewports. */
 export const glassPad = "p-3 sm:p-5";
+
+/** Shared motion for clickable CTAs over the 3D canvas. */
+export const ctaMotion =
+  "pointer-events-auto rounded-xl font-semibold tracking-wide hover:scale-[1.03] active:scale-[0.98] transition-all duration-300";
+
+/** Cyan-to-blue primary CTA matching technoai.ae. */
+export const ctaPrimary =
+  "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)]";
+
+/** Dark glass outline secondary CTA. */
+export const ctaSecondary =
+  "bg-slate-900/40 hover:bg-slate-800/60 text-slate-200 border border-slate-700/80 hover:border-cyan-500/60 backdrop-blur-md";

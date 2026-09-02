@@ -2,8 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { ButtonHTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
-import { springSnappy } from "@/lib/motion";
+import { cn, ctaMotion, ctaPrimary, ctaSecondary } from "@/lib/utils";
 
 type NativeButtonProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -20,10 +19,8 @@ interface ButtonProps extends NativeButtonProps {
 }
 
 const variantStyles: Record<NonNullable<ButtonProps["variant"]>, string> = {
-  primary:
-    "bg-primary text-white hover:bg-primary-600 shadow-lg shadow-primary/25",
-  secondary:
-    "bg-white/5 text-foreground border border-white/10 hover:bg-white/10",
+  primary: ctaPrimary,
+  secondary: ctaSecondary,
   ghost: "text-foreground/80 hover:text-foreground hover:bg-white/5",
 };
 
@@ -41,11 +38,10 @@ export function Button({
     <motion.button
       type={type}
       disabled={disabled}
-      whileHover={reduce || disabled ? undefined : { scale: 1.05 }}
-      whileTap={reduce || disabled ? undefined : { scale: 0.97 }}
-      transition={springSnappy}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 disabled:opacity-50",
+        "group relative inline-flex items-center justify-center gap-2 px-5 py-3 text-xs will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 disabled:pointer-events-none disabled:opacity-50 sm:text-sm",
+        ctaMotion,
+        reduce && "hover:scale-100 active:scale-100",
         variantStyles[variant],
         className
       )}

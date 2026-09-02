@@ -14,7 +14,15 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { cn, glassHover, glassPad, glassPanel } from "@/lib/utils";
+import {
+  cn,
+  ctaMotion,
+  ctaPrimary,
+  ctaSecondary,
+  glassHover,
+  glassPad,
+  glassPanel,
+} from "@/lib/utils";
 import { gsap } from "@/lib/gsap";
 import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { useExploreOptional } from "@/components/canvas/ExploreSequence";
@@ -30,6 +38,17 @@ function scrollToHash(hash: string) {
 }
 
 const interactive = "pointer-events-auto";
+
+function ButtonShine() {
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl"
+    >
+      <span className="absolute inset-y-0 left-[-45%] w-[40%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-0 transition-all duration-700 group-hover:left-[110%] group-hover:opacity-100" />
+    </span>
+  );
+}
 
 /**
  * Full-viewport HUD over the WebGL canvas. The root is `pointer-events-none`
@@ -144,11 +163,13 @@ function OverlayNav({
         <div className="flex items-center gap-2">
           <Button
             type="button"
-            variant="primary"
+            variant="secondary"
             onClick={onGetStarted}
             className={cn(
               interactive,
-              "hidden px-5 py-2 text-xs font-semibold uppercase tracking-[0.16em] shadow-[0_0_24px_rgba(109,91,255,0.55)] md:animate-glow-pulse lg:inline-flex"
+              ctaMotion,
+              ctaSecondary,
+              "hidden px-5 py-2 text-xs uppercase tracking-[0.16em] lg:inline-flex"
             )}
           >
             {siteContent.hero.primaryCta}
@@ -160,7 +181,9 @@ function OverlayNav({
             onClick={onToggleMenu}
             className={cn(
               interactive,
-              "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-foreground/80 lg:hidden"
+              ctaMotion,
+              ctaSecondary,
+              "flex h-9 w-9 shrink-0 items-center justify-center lg:hidden"
             )}
           >
             {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -199,9 +222,14 @@ function OverlayNav({
               ))}
               <Button
                 type="button"
-                variant="primary"
+                variant="secondary"
                 onClick={onGetStarted}
-                className="mt-2 w-full uppercase tracking-[0.16em]"
+                className={cn(
+                  interactive,
+                  ctaMotion,
+                  ctaSecondary,
+                  "mt-2 w-full uppercase tracking-[0.16em]"
+                )}
               >
                 {siteContent.hero.primaryCta}
               </Button>
@@ -270,8 +298,16 @@ function HeroCopy({
       <motion.div
         {...fade}
         transition={{ ...spring, delay: 0.4 }}
-        className="flex w-full min-w-0 max-w-full flex-col gap-2 sm:max-w-md sm:flex-row sm:gap-3"
+        className="relative flex w-full min-w-0 max-w-full flex-col gap-2 sm:max-w-md sm:flex-row sm:gap-3"
       >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -left-6 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-3xl"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-4 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-blue-600/10 blur-3xl sm:-right-4"
+        />
         <Button
           type="button"
           variant={isExploring ? "secondary" : "primary"}
@@ -283,15 +319,23 @@ function HeroCopy({
           aria-busy={isBusy}
           className={cn(
             interactive,
-            "w-full min-w-0 px-5 py-3 text-xs font-semibold tracking-wide shadow-[0_0_24px_rgba(109,91,255,0.4)] sm:w-auto sm:text-sm md:animate-glow-pulse"
+            ctaMotion,
+            isExploring ? ctaSecondary : ctaPrimary,
+            "relative z-10 w-full min-w-0 px-5 py-3 text-xs sm:w-auto sm:text-sm"
           )}
         >
+          {!isExploring && <ButtonShine />}
           {isExploring ? (
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="relative h-4 w-4" />
           ) : (
-            <Radar className={cn("h-4 w-4", isBusy && "animate-spin")} />
+            <Radar
+              className={cn("relative h-4 w-4", isBusy && "animate-spin")}
+            />
           )}
-          {exploreLabel}
+          <span className="relative">{exploreLabel}</span>
+          {!isExploring && (
+            <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+          )}
         </Button>
         <Button
           type="button"
@@ -299,7 +343,9 @@ function HeroCopy({
           onClick={onBookDemo}
           className={cn(
             interactive,
-            "w-full min-w-0 border-white/15 bg-white/5 px-5 py-3 text-xs font-semibold tracking-wide backdrop-blur-md sm:w-auto sm:text-sm"
+            ctaMotion,
+            ctaSecondary,
+            "relative z-10 w-full min-w-0 px-5 py-3 text-xs sm:w-auto sm:text-sm"
           )}
         >
           <Calendar className="h-4 w-4" />
@@ -378,7 +424,12 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
           type="button"
           aria-label="Close"
           onClick={onClose}
-          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-foreground/60 hover:text-foreground"
+          className={cn(
+            interactive,
+            ctaMotion,
+            ctaSecondary,
+            "absolute right-4 top-4 flex h-8 w-8 items-center justify-center"
+          )}
         >
           <X className="h-4 w-4" />
         </button>
@@ -393,10 +444,16 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
         </p>
         <a
           href="mailto:info@technoai.ae?subject=Project%20inquiry"
-          className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-white shadow-[0_0_24px_rgba(109,91,255,0.45)] transition-colors hover:bg-primary-600"
+          className={cn(
+            interactive,
+            ctaMotion,
+            ctaPrimary,
+            "group relative mt-6 inline-flex w-full items-center justify-center gap-2 px-6 py-3 text-sm"
+          )}
         >
-          Email info@technoai.ae
-          <ArrowRight className="h-4 w-4" />
+          <ButtonShine />
+          <span className="relative">Email info@technoai.ae</span>
+          <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
         </a>
       </motion.div>
     </motion.div>
