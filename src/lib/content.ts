@@ -1,3 +1,1 @@
-import data from "../../content/technoai-data.json";
-export const siteContent = data;
-export type SiteContent = typeof data;
+import data from"../../content/technoai-data.json";export const siteContent=data;export type SiteContent=typeof data;
