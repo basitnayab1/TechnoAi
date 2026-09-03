@@ -154,7 +154,7 @@ function Hotspot({
           onSelect();
         }}
       >
-        <sphereGeometry args={[0.22, 16, 16]} />
+        <sphereGeometry args={[0.42, 16, 16]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
 
@@ -188,7 +188,7 @@ function Hotspot({
               lock(false);
             }}
             className={cn(
-              "relative flex h-8 w-8 select-none items-center justify-center rounded-full border border-cyan-400/60 bg-black/40 font-mono text-xs font-bold tracking-widest text-cyan-300 backdrop-blur-sm transition-all duration-300 ease-out lg:text-sm",
+              "relative flex h-10 w-10 select-none items-center justify-center rounded-full border border-cyan-400/60 bg-black/40 font-mono text-xs font-bold tracking-widest text-cyan-300 backdrop-blur-sm transition-all duration-300 ease-out lg:text-sm",
               "shadow-[0_0_12px_2px_rgba(0,240,255,0.25)]",
               highlighted &&
                 "scale-125 border-cyan-400 bg-cyan-400/20 text-white shadow-[0_0_26px_6px_rgba(0,240,255,0.55)]"
