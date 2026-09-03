@@ -1,5 +1,4 @@
 "use client";
-
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Banknote,
@@ -15,7 +14,6 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { fadeUp, springSoft } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
 import { cn, glassHover, glassPad, glassPanel } from "@/lib/utils";
-
 const FEATURE_ICONS: LucideIcon[] = [
   Banknote,
   Plane,
@@ -24,12 +22,10 @@ const FEATURE_ICONS: LucideIcon[] = [
   Factory,
   ShieldCheck,
 ];
-
 const features = siteContent.solutions.map((item, index) => ({
   ...item,
   icon: FEATURE_ICONS[index] ?? ShieldCheck,
 }));
-
 function FeatureCard({
   feature,
   index,
@@ -39,7 +35,6 @@ function FeatureCard({
 }) {
   const Icon = feature.icon;
   const reduce = useReducedMotion();
-
   return (
     <motion.div
       variants={fadeUp}
@@ -68,10 +63,8 @@ function FeatureCard({
     </motion.div>
   );
 }
-
 export function Features() {
   const { eyebrow, title, description } = siteContent.sections.solutions;
-
   return (
     <section id="solutions" className="relative scroll-mt-8 py-24 sm:py-32">
       <Container className="flex flex-col gap-16">
@@ -80,7 +73,6 @@ export function Features() {
           title={title}
           description={description}
         />
-
         <div className="grid min-w-0 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <FeatureCard key={feature.code} feature={feature} index={index} />

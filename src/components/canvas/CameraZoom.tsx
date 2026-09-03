@@ -1,5 +1,4 @@
 "use client";
-
 import {
   createContext,
   useCallback,
@@ -18,16 +17,12 @@ import { gsap } from "@/lib/gsap";
 import { useExploreOptional } from "./ExploreSequence";
 import { useCameraFocusOptional } from "./CameraFocus";
 import { useCompactScene } from "./useCompactScene";
-
-/** Closest the camera may sit to the orbit target. */
 export const ZOOM_MIN_DESKTOP = 2.05;
 export const ZOOM_MIN_COMPACT = 2.35;
-/** Farthest pull-back. */
 export const ZOOM_MAX = 11;
 const ZOOM_IN_FACTOR = 0.78;
 const ZOOM_OUT_FACTOR = 1.28;
 const TWEEN_DURATION = 0.42;
-
 interface CameraZoomContextValue {
   distance: number;
   minDistance: number;
@@ -40,9 +35,7 @@ interface CameraZoomContextValue {
   zoomOut: () => void;
   setDistance: (next: number) => void;
 }
-
 const CameraZoomContext = createContext<CameraZoomContextValue | null>(null);
-
 export function useCameraZoom() {
   const ctx = useContext(CameraZoomContext);
   if (!ctx) {
@@ -50,23 +43,18 @@ export function useCameraZoom() {
   }
   return ctx;
 }
-
 export function useCameraZoomOptional() {
   return useContext(CameraZoomContext);
 }
-
 function clampDistance(value: number, min: number, max: number) {
   return MathUtils.clamp(value, min, max);
 }
-
 interface ZoomCommandBridge {
   command: { id: number; target: number; immediate?: boolean } | null;
   reportDistance: (next: number) => void;
   clearCommand: () => void;
 }
-
 const CameraZoomCommandContext = createContext<ZoomCommandBridge | null>(null);
-
 export function CameraZoomProvider({ children }: { children: ReactNode }) {
   const compact = useCompactScene();
   const minDistance = compact ? ZOOM_MIN_COMPACT : ZOOM_MIN_DESKTOP;
@@ -79,11 +67,9 @@ export function CameraZoomProvider({ children }: { children: ReactNode }) {
   const commandId = useRef(0);
   const distanceRef = useRef(distance);
   distanceRef.current = distance;
-
   const explore = useExploreOptional();
   const focus = useCameraFocusOptional();
   const isBusy = Boolean(explore?.isSequencing || focus?.isAnimating);
-
   const requestDistance = useCallback(
     (next: number, immediate = false) => {
       if (isBusy) return;
@@ -94,28 +80,23 @@ export function CameraZoomProvider({ children }: { children: ReactNode }) {
     },
     [isBusy, minDistance]
   );
-
   const zoomIn = useCallback(() => {
     requestDistance(distanceRef.current * ZOOM_IN_FACTOR);
   }, [requestDistance]);
-
   const zoomOut = useCallback(() => {
     requestDistance(distanceRef.current * ZOOM_OUT_FACTOR);
   }, [requestDistance]);
-
   const setDistance = useCallback(
     (next: number) => {
       requestDistance(next, true);
     },
     [requestDistance]
   );
-
   const reportDistance = useCallback((next: number) => {
     const rounded = Math.round(next * 40) / 40;
     if (Math.abs(rounded - distanceRef.current) < 0.02) return;
     setDistanceState(rounded);
   }, []);
-
   const value = useMemo<CameraZoomContextValue>(
     () => ({
       distance,
@@ -131,7 +112,6 @@ export function CameraZoomProvider({ children }: { children: ReactNode }) {
     }),
     [command, distance, isBusy, minDistance, setDistance, zoomIn, zoomOut]
   );
-
   const commandBridge = useMemo<ZoomCommandBridge>(
     () => ({
       command,
@@ -140,7 +120,6 @@ export function CameraZoomProvider({ children }: { children: ReactNode }) {
     }),
     [command, reportDistance]
   );
-
   return (
     <CameraZoomContext.Provider value={value}>
       <CameraZoomCommandContext.Provider value={commandBridge}>
@@ -149,7 +128,6 @@ export function CameraZoomProvider({ children }: { children: ReactNode }) {
     </CameraZoomContext.Provider>
   );
 }
-
 function useZoomCommand() {
   const ctx = useContext(CameraZoomCommandContext);
   if (!ctx) {
@@ -157,9 +135,7 @@ function useZoomCommand() {
   }
   return ctx;
 }
-
 const scratchOffset = new Vector3();
-
 function applyDistance(
   camera: { position: Vector3; lookAt: (x: number, y: number, z: number) => void },
   target: Vector3,
@@ -178,15 +154,9 @@ function applyDistance(
     controls.update();
   }
 }
-
 interface CameraZoomRigProps {
   controlsRef: MutableRefObject<OrbitControlsImpl | null>;
 }
-
-/**
- * Applies HUD / pinch zoom by dollying the camera along the look vector.
- * Wheel zoom stays off on the marketing page so the document can scroll.
- */
 export function CameraZoomRig({ controlsRef }: CameraZoomRigProps) {
   const { camera, gl } = useThree();
   const { command, reportDistance, clearCommand } = useZoomCommand();
@@ -196,41 +166,32 @@ export function CameraZoomRig({ controlsRef }: CameraZoomRigProps) {
   const compact = useCompactScene();
   const tweenRef = useRef<ReturnType<typeof gsap.to> | null>(null);
   const pinchStart = useRef<{ span: number; distance: number } | null>(null);
-
   const restTarget = useMemo(
     () =>
       compact ? new Vector3(0, 0.2, 0) : new Vector3(2, 0.2, 0),
     [compact]
   );
-
   const currentTarget = useCallback(() => {
     return controlsRef.current?.target ?? restTarget;
   }, [controlsRef, restTarget]);
-
   const currentDistance = useCallback(() => {
     return camera.position.distanceTo(currentTarget());
   }, [camera, currentTarget]);
-
   useFrame(() => {
     if (tweenRef.current || pinchStart.current) return;
     reportDistance(currentDistance());
   });
-
   useEffect(() => {
     if (!command) return;
-
     tweenRef.current?.kill();
     const target = currentTarget().clone();
-
     if (command.immediate) {
       applyDistance(camera, target, command.target, controlsRef.current);
       reportDistance(command.target);
       clearCommand();
       return;
     }
-
     const proxy = { distance: currentDistance() };
-
     tweenRef.current = gsap.to(proxy, {
       distance: command.target,
       duration: TWEEN_DURATION,
@@ -245,30 +206,25 @@ export function CameraZoomRig({ controlsRef }: CameraZoomRigProps) {
         clearCommand();
       },
     });
-
     return () => {
       tweenRef.current?.kill();
       tweenRef.current = null;
     };
   }, [camera, clearCommand, command, controlsRef, currentDistance, currentTarget, reportDistance]);
-
   useEffect(() => {
     if (explore?.isSequencing || focus?.isAnimating) {
       tweenRef.current?.kill();
       pinchStart.current = null;
     }
   }, [explore?.isSequencing, focus?.isAnimating]);
-
   useEffect(() => {
     const el = gl.domElement;
     const busy = () => Boolean(explore?.isSequencing || focus?.isAnimating);
-
     const touchSpan = (event: TouchEvent) => {
       const [a, b] = [event.touches[0], event.touches[1]];
       if (!a || !b) return 0;
       return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
     };
-
     const onTouchStart = (event: TouchEvent) => {
       if (event.touches.length !== 2 || busy()) {
         pinchStart.current = null;
@@ -280,7 +236,6 @@ export function CameraZoomRig({ controlsRef }: CameraZoomRigProps) {
         distance: currentDistance(),
       };
     };
-
     const onTouchMove = (event: TouchEvent) => {
       const start = pinchStart.current;
       if (!start || event.touches.length !== 2 || busy()) return;
@@ -295,16 +250,13 @@ export function CameraZoomRig({ controlsRef }: CameraZoomRigProps) {
       applyDistance(camera, currentTarget().clone(), next, controlsRef.current);
       reportDistance(next);
     };
-
     const onTouchEnd = () => {
       pinchStart.current = null;
     };
-
     el.addEventListener("touchstart", onTouchStart, { passive: true });
     el.addEventListener("touchmove", onTouchMove, { passive: false });
     el.addEventListener("touchend", onTouchEnd);
     el.addEventListener("touchcancel", onTouchEnd);
-
     return () => {
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove", onTouchMove);
@@ -322,6 +274,5 @@ export function CameraZoomRig({ controlsRef }: CameraZoomRigProps) {
     minDistance,
     reportDistance,
   ]);
-
   return null;
 }

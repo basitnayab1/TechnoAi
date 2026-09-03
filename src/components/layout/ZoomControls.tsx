@@ -1,47 +1,33 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import { cn, glassPanel } from "@/lib/utils";
 import { useCameraZoomOptional } from "@/components/canvas/CameraZoom";
-
 const interactive = "pointer-events-auto";
-
-/**
- * Glass zoom HUD for the hero drone. Mouse-wheel zoom stays off on the
- * homepage so the page can still scroll; this panel (and pinch on the
- * canvas) is the explicit zoom control.
- */
 export function ZoomControls() {
   const zoom = useCameraZoomOptional();
   const holdRef = useRef<number | null>(null);
-
   useEffect(() => {
     return () => {
       if (holdRef.current) window.clearInterval(holdRef.current);
     };
   }, []);
-
   if (!zoom) return null;
-
   const { distance, minDistance, maxDistance, canZoomIn, canZoomOut, isBusy } =
     zoom;
   const span = Math.max(maxDistance - minDistance, 0.001);
   const zoomPct = ((maxDistance - distance) / span) * 100;
-
   const stopHold = () => {
     if (holdRef.current) {
       window.clearInterval(holdRef.current);
       holdRef.current = null;
     }
   };
-
   const startHold = (action: () => void) => {
     action();
     stopHold();
     holdRef.current = window.setInterval(action, 340);
   };
-
   return (
     <div
         className={cn(
@@ -71,7 +57,6 @@ export function ZoomControls() {
       >
         <ZoomIn className="h-4 w-4" />
       </button>
-
       <input
         type="range"
         min={0}
@@ -89,7 +74,6 @@ export function ZoomControls() {
         }}
         className="drone-zoom-slider h-24 w-6 cursor-pointer accent-cyan-400 disabled:cursor-not-allowed disabled:opacity-40"
       />
-
       <button
         type="button"
         aria-label="Zoom out"
@@ -109,7 +93,6 @@ export function ZoomControls() {
       >
         <ZoomOut className="h-4 w-4" />
       </button>
-
       <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#00F0FF]/80">
         Zoom
       </span>

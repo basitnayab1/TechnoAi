@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -27,11 +26,8 @@ import { useCameraFocusOptional } from "@/components/canvas/CameraFocus";
 import { BOOK_DEMO_EVENT } from "@/components/layout/Navbar";
 import { ZoomControls } from "@/components/layout/ZoomControls";
 import { siteContent } from "@/lib/content";
-
 const SPEC_ICONS = [Globe2, Radar, Workflow] as const;
-
 const interactive = "pointer-events-auto";
-
 function ButtonShine() {
   return (
     <span
@@ -42,41 +38,29 @@ function ButtonShine() {
     </span>
   );
 }
-
-/**
- * Full-viewport HUD over the WebGL canvas. The root is `pointer-events-none`
- * so orbit-drag still reaches the canvas; only nav, CTAs, and dialogs opt
- * back in with `pointer-events-auto`.
- */
 export function HeroOverlay() {
   const [demoOpen, setDemoOpen] = useState(false);
-
   useEffect(() => {
     const openDemo = () => setDemoOpen(true);
     window.addEventListener(BOOK_DEMO_EVENT, openDemo);
     return () => window.removeEventListener(BOOK_DEMO_EVENT, openDemo);
   }, []);
-
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex min-w-0 max-w-full flex-col overflow-x-hidden">
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] w-full max-w-full bg-gradient-to-b from-[#030712] via-[#0B0F17]/90 to-[#030712]/40 md:inset-y-0 md:left-0 md:top-0 md:h-full md:w-[min(58%,40rem)] md:bg-gradient-to-r md:from-[#030712] md:via-[#0B0F17]/80 md:to-transparent" />
-
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-[55vh] min-h-0 min-w-0 flex-col justify-center gap-3 overflow-x-hidden overflow-y-auto px-4 pb-4 pt-3 sm:gap-4 sm:px-5 sm:pb-5 md:relative md:h-auto md:flex-1 md:justify-between md:gap-6 md:px-6 md:pb-8 md:pt-24 lg:px-10 lg:pb-10 lg:pt-28">
         <HeroCopy onBookDemo={() => setDemoOpen(true)} />
         <SpecsRow />
       </div>
-
       <div className="pointer-events-none absolute right-3 top-24 z-30 md:right-6 md:top-1/2 md:-translate-y-[42%]">
         <ZoomControls />
       </div>
-
       <AnimatePresence>
         {demoOpen && <DemoPanel onClose={() => setDemoOpen(false)} />}
       </AnimatePresence>
     </div>
   );
 }
-
 function HeroCopy({
   onBookDemo,
 }: {
@@ -90,14 +74,12 @@ function HeroCopy({
   const isExploring = state === "exploring";
   const hotspotActive = Boolean(focus?.activeHotspot);
   const showReset = hotspotActive || isExploring;
-
   const exploreLabel =
     state === "flying" || state === "returning"
       ? "Flying…"
       : showReset
         ? "Reset View"
         : siteContent.hero.secondaryCta;
-
   return (
     <div className="flex w-full min-w-0 max-w-xl flex-col items-start gap-2.5 sm:gap-4 md:gap-6 lg:max-w-lg xl:max-w-xl">
       <motion.span
@@ -108,7 +90,6 @@ function HeroCopy({
         <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[#00F0FF] shadow-[0_0_10px_rgba(0,240,255,0.8)]" />
         <span className="truncate">{siteContent.hero.eyebrow}</span>
       </motion.span>
-
       <motion.h1
         {...fade}
         transition={{ ...spring, delay: 0.16 }}
@@ -116,7 +97,6 @@ function HeroCopy({
       >
         {siteContent.hero.title} {siteContent.hero.titleAccent}
       </motion.h1>
-
       <motion.p
         {...fade}
         transition={{ ...spring, delay: 0.28 }}
@@ -131,7 +111,6 @@ function HeroCopy({
       >
         {siteContent.hero.description}
       </motion.p>
-
       <motion.div
         {...fade}
         transition={{ ...spring, delay: 0.4 }}
@@ -196,10 +175,8 @@ function HeroCopy({
     </div>
   );
 }
-
 function SpecsRow() {
   const { fade, spring } = useMotionPrefs();
-
   return (
     <ul className="grid w-full min-w-0 max-w-xl grid-cols-3 gap-1.5 sm:gap-2 md:gap-2.5">
       {siteContent.hero.specs.map((spec, index) => {
@@ -234,7 +211,6 @@ function SpecsRow() {
     </ul>
   );
 }
-
 function DemoPanel({ onClose }: { onClose: () => void }) {
   return (
     <motion.div

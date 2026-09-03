@@ -1,9 +1,7 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { fadeUp, springSoft, staggerContainer, useMotionPrefs } from "@/lib/motion";
-
 interface SectionHeadingProps {
   eyebrow?: string;
   title: string;
@@ -11,7 +9,6 @@ interface SectionHeadingProps {
   align?: "left" | "center";
   className?: string;
 }
-
 export function SectionHeading({
   eyebrow,
   title,
@@ -20,7 +17,6 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   const { reduce } = useMotionPrefs();
-
   return (
     <motion.div
       className={cn(

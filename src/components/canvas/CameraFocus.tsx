@@ -1,5 +1,4 @@
 "use client";
-
 import {
   createContext,
   useCallback,
@@ -20,7 +19,6 @@ import {
   getHotspot,
   type HotspotId,
 } from "./hotspots";
-
 interface CameraFocusContextValue {
   activeHotspot: HotspotId | null;
   isAnimating: boolean;
@@ -29,12 +27,9 @@ interface CameraFocusContextValue {
   setOrbitLocked: (locked: boolean) => void;
   focusHotspot: (id: HotspotId) => void;
   resetView: () => void;
-  /** True for a short window after reset so a leftover click cannot start Explore. */
   shouldIgnoreExplore: () => boolean;
 }
-
 const CameraFocusContext = createContext<CameraFocusContextValue | null>(null);
-
 export function useCameraFocus() {
   const ctx = useContext(CameraFocusContext);
   if (!ctx) {
@@ -42,32 +37,25 @@ export function useCameraFocus() {
   }
   return ctx;
 }
-
 export function useCameraFocusOptional() {
   return useContext(CameraFocusContext);
 }
-
 export function CameraFocusProvider({ children }: { children: ReactNode }) {
   const [activeHotspot, setActiveHotspot] = useState<HotspotId | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [orbitLocked, setOrbitLocked] = useState(false);
-
   const ignoreExploreUntil = useRef(0);
-
   const focusHotspot = useCallback((id: HotspotId) => {
     setActiveHotspot((current) => (current === id ? null : id));
   }, []);
-
   const resetView = useCallback(() => {
     setActiveHotspot(null);
     ignoreExploreUntil.current = Date.now() + 500;
   }, []);
-
   const shouldIgnoreExplore = useCallback(
     () => Date.now() < ignoreExploreUntil.current,
     []
   );
-
   const value = useMemo<CameraFocusContextValue>(
     () => ({
       activeHotspot,
@@ -88,14 +76,12 @@ export function CameraFocusProvider({ children }: { children: ReactNode }) {
       shouldIgnoreExplore,
     ]
   );
-
   return (
     <CameraFocusContext.Provider value={value}>
       {children}
     </CameraFocusContext.Provider>
   );
 }
-
 function worldFromLocal(
   local: [number, number, number],
   placement: (typeof HERO_PLACEMENT)["compact" | "desktop"]
@@ -106,22 +92,15 @@ function worldFromLocal(
     placement.position[2] + local[2] * placement.scale,
   ];
 }
-
 interface CameraFocusRigProps {
   controlsRef: MutableRefObject<OrbitControlsImpl | null>;
 }
-
-/**
- * Tweens the R3F camera and OrbitControls target whenever the active
- * hotspot changes. Clearing the hotspot flies back to `[0, 0, 6]`.
- */
 export function CameraFocusRig({ controlsRef }: CameraFocusRigProps) {
   const { camera } = useThree();
   const { activeHotspot, setIsAnimating } = useCameraFocus();
   const compact = useCompactScene();
   const timelineRef = useRef<ReturnType<typeof gsap.timeline> | null>(null);
   const didMount = useRef(false);
-
   const placement = compact ? HERO_PLACEMENT.compact : HERO_PLACEMENT.desktop;
   const restLookAt = useMemo(
     (): [number, number, number] => [
@@ -131,19 +110,15 @@ export function CameraFocusRig({ controlsRef }: CameraFocusRigProps) {
     ],
     [placement]
   );
-
   useEffect(() => {
     if (!didMount.current) {
       didMount.current = true;
       if (activeHotspot === null) return;
     }
-
     const controls = controlsRef.current;
     const hotspot = getHotspot(activeHotspot);
-
     timelineRef.current?.kill();
     setIsAnimating(true);
-
     const lookTarget = {
       x: restLookAt[0],
       y: restLookAt[1],
@@ -154,7 +129,6 @@ export function CameraFocusRig({ controlsRef }: CameraFocusRigProps) {
       y: compact ? 0.35 : DEFAULT_CAMERA[1],
       z: DEFAULT_CAMERA[2],
     };
-
     if (hotspot) {
       const offsetScale = compact ? 0.82 : 1;
       const focus = worldFromLocal(hotspot.position, placement);
@@ -173,13 +147,11 @@ export function CameraFocusRig({ controlsRef }: CameraFocusRigProps) {
       camTarget.y = cam[1];
       camTarget.z = cam[2];
     }
-
     const look = () => {
       camera.lookAt(lookTarget.x, lookTarget.y, lookTarget.z);
       controls?.target.set(lookTarget.x, lookTarget.y, lookTarget.z);
       controls?.update();
     };
-
     const tl = gsap.timeline({
       defaults: { ease: "power3.inOut" },
       onComplete: () => {
@@ -187,7 +159,6 @@ export function CameraFocusRig({ controlsRef }: CameraFocusRigProps) {
         setIsAnimating(false);
       },
     });
-
     tl.to(camera.position, { ...camTarget, duration: 1.25, onUpdate: look }, 0);
     if (controls) {
       tl.to(
@@ -196,9 +167,7 @@ export function CameraFocusRig({ controlsRef }: CameraFocusRigProps) {
         0
       );
     }
-
     timelineRef.current = tl;
-
     return () => {
       timelineRef.current?.kill();
       timelineRef.current = null;
@@ -212,6 +181,5 @@ export function CameraFocusRig({ controlsRef }: CameraFocusRigProps) {
     restLookAt,
     setIsAnimating,
   ]);
-
   return null;
 }

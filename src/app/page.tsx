@@ -6,7 +6,6 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Features } from "@/components/sections/Features";
 import { About } from "@/components/sections/About";
 import { CTA } from "@/components/sections/CTA";
-
 const SceneCanvas = dynamic(
   () => import("@/components/canvas/SceneCanvas").then((mod) => mod.SceneCanvas),
   {
@@ -16,12 +15,10 @@ const SceneCanvas = dynamic(
     ),
   }
 );
-
 const HeroModel = dynamic(
   () => import("@/components/canvas/HeroModel").then((mod) => mod.HeroModel),
   { ssr: false }
 );
-
 export default function Home() {
   return (
     <div className="relative w-full min-w-0 max-w-full overflow-x-hidden bg-gradient-to-b from-[#030712] via-[#0B0F17] to-[#030712]">
@@ -40,13 +37,11 @@ export default function Home() {
             <HeroModel />
           </SceneCanvas>
         </section>
-
         <main className="w-full min-w-0 max-w-full overflow-x-hidden">
           <Features />
           <About />
           <CTA />
         </main>
-
         <Footer />
       </div>
     </div>

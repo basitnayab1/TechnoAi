@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import {
   Wallet,
@@ -15,7 +14,6 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
 import { cn, glassHover, glassPad, glassPanel } from "@/lib/utils";
-
 const SERVICE_ICONS: LucideIcon[] = [
   Wallet,
   ShoppingCart,
@@ -24,16 +22,13 @@ const SERVICE_ICONS: LucideIcon[] = [
   ClipboardList,
   Headset,
 ];
-
 export function About() {
   const { fade, spring } = useMotionPrefs();
   const { eyebrow, title, description, body } = siteContent.sections.services;
-
   return (
     <section id="services" className="relative scroll-mt-8 overflow-hidden py-24 sm:py-32">
       <div className="absolute inset-0 bg-[#0b0f17]/55" />
       <div className="absolute inset-0 bg-radial-fade opacity-60" />
-
       <Container className="relative z-10 grid gap-16 lg:grid-cols-2 lg:items-start">
         <div className="flex flex-col gap-6">
           <SectionHeading
@@ -68,7 +63,6 @@ export function About() {
             ))}
           </ul>
         </div>
-
         <div className="grid gap-4">
           {siteContent.services.map((service, index) => {
             const Icon = SERVICE_ICONS[index] ?? Wrench;

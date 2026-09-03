@@ -1,32 +1,26 @@
 "use client";
-
 import { useReducedMotion, type Transition } from "framer-motion";
-
 export const fadeUp = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
 } as const;
-
 export const staggerContainer = {
   initial: {},
   animate: {
     transition: { staggerChildren: 0.12, delayChildren: 0.04 },
   },
 } as const;
-
 export const springSoft: Transition = {
   type: "spring",
   stiffness: 280,
   damping: 24,
   mass: 0.7,
 };
-
 export const springSnappy: Transition = {
   type: "spring",
   stiffness: 420,
   damping: 22,
 };
-
 export function useMotionPrefs() {
   const reduce = useReducedMotion();
   return {

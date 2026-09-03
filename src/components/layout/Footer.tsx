@@ -1,17 +1,14 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { Sparkles, Mail, Globe2, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { fadeUp, springSoft } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
-
 const columns = [
   { title: "Solutions", links: siteContent.footer.sitemap.solutions },
   { title: "Industries", links: siteContent.footer.sitemap.industries },
   { title: "Services", links: siteContent.footer.sitemap.services },
 ];
-
 export function Footer() {
   return (
     <footer id="contact" className="border-t border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)]">
@@ -61,7 +58,6 @@ export function Footer() {
             ))}
           </div>
         </motion.div>
-
         {columns.map((column, columnIndex) => (
           <motion.div
             key={column.title}
@@ -87,7 +83,6 @@ export function Footer() {
           </motion.div>
         ))}
       </Container>
-
       <Container className="flex flex-col items-center justify-between gap-4 border-t border-border py-6 text-xs text-foreground/40 sm:flex-row">
         <p>
           © {new Date().getFullYear()} {siteContent.company.name}. All rights

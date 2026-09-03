@@ -1,35 +1,26 @@
 "use client";
-
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Sparkles, X } from "lucide-react";
 import { cn, navBarShell, navCta, navLink } from "@/lib/utils";
 import { springSoft } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
-
 const links = siteContent.nav;
-
-/** Hero overlay listens for this to open the project/demo dialog. */
 export const BOOK_DEMO_EVENT = "technoai:book-demo";
-
 export function requestBookDemo() {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent(BOOK_DEMO_EVENT));
 }
-
 function scrollToHash(hash: string) {
   const id = hash.replace("#", "");
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 }
-
 export function Navbar() {
   const [open, setOpen] = useState(false);
-
   const onCta = () => {
     setOpen(false);
     requestBookDemo();
   };
-
   return (
     <header className={navBarShell}>
       <div className="mx-auto grid w-full min-w-0 max-w-7xl grid-cols-[1fr_auto] items-center gap-3 md:grid-cols-3">
@@ -45,7 +36,6 @@ export function Navbar() {
           <Sparkles className="h-6 w-6 shrink-0 animate-pulse text-[#00F0FF]" />
           <span>TechnoAI</span>
         </a>
-
         <nav className="hidden items-center justify-center gap-8 justify-self-center md:flex">
           {links.map((link) => (
             <a
@@ -61,7 +51,6 @@ export function Navbar() {
             </a>
           ))}
         </nav>
-
         <div className="flex items-center justify-end gap-2 justify-self-end">
           <button
             type="button"
@@ -81,7 +70,6 @@ export function Navbar() {
           </button>
         </div>
       </div>
-
       <AnimatePresence>
         {open && (
           <motion.div

@@ -1,5 +1,4 @@
 "use client";
-
 import { Suspense, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float, Html, useGLTF } from "@react-three/drei";
@@ -10,13 +9,10 @@ import { useExploreOptional } from "./ExploreSequence";
 import { useCameraFocusOptional } from "./CameraFocus";
 import { HERO_PLACEMENT, useCompactScene } from "./useCompactScene";
 import { HOTSPOTS, type HotspotDefinition } from "./hotspots";
-
-const DRONE_MODEL_PATH = "/models/drone.glb";
+const DRONE_MODEL_PATH = "https://raw.githubusercontent.com/basitnayab1/TechnoAi/cursor/brand-colors-ae31/public/models/drone.glb";
 const BASE_SCALE = 1;
 const HOVER_SCALE = 1.08;
-/** Normalized bounding size so the drone reads clearly at every camera distance. */
 const TARGET_SIZE = 2.6;
-
 function HeroShape() {
   const outerRef = useRef<Group>(null);
   const modelRef = useRef<Group>(null);
@@ -27,13 +23,11 @@ function HeroShape() {
   const compact = useCompactScene();
   const placement = compact ? HERO_PLACEMENT.compact : HERO_PLACEMENT.desktop;
   const isFocused = Boolean(focus?.activeHotspot);
-
   const model = useMemo(() => {
     const clone = scene.clone(true);
     const box = new Box3().setFromObject(clone);
     const size = box.getSize(new Vector3());
     const center = box.getCenter(new Vector3());
-
     clone.position.sub(center);
     clone.traverse((child) => {
       if ("isMesh" in child && child.isMesh) {
@@ -41,22 +35,17 @@ function HeroShape() {
         child.receiveShadow = true;
       }
     });
-
     const maxDim = Math.max(size.x, size.y, size.z);
     const normalizedScale = TARGET_SIZE / maxDim;
-
     return { node: clone, normalizedScale };
   }, [scene]);
-
   useFrame((_, delta) => {
     const outer = outerRef.current;
     const model3d = modelRef.current;
     if (!outer || !model3d) return;
-
     if (!explore?.isSequencing && !isFocused) {
       outer.rotation.y += delta * 0.22;
     }
-
     const currentMultiplier = model3d.scale.x / model.normalizedScale;
     const nextMultiplier = MathUtils.lerp(
       currentMultiplier,
@@ -66,7 +55,6 @@ function HeroShape() {
     const scale = model.normalizedScale * nextMultiplier;
     model3d.scale.setScalar(scale);
   });
-
   return (
     <group position={placement.position} scale={placement.scale}>
       <Float
@@ -91,7 +79,6 @@ function HeroShape() {
           >
             <primitive object={model.node} />
           </group>
-
           {HOTSPOTS.map((hotspot) => (
             <Hotspot
               key={hotspot.id}
@@ -107,11 +94,6 @@ function HeroShape() {
     </group>
   );
 }
-
-/**
- * Invisible mesh hit-target (reliable against OrbitControls) plus a
- * 3D-anchored HTML badge/card that tracks the part as the drone moves.
- */
 function Hotspot({
   hotspot,
   isActive,
@@ -127,12 +109,10 @@ function Hotspot({
 }) {
   const [hovered, setHovered] = useState(false);
   const highlighted = hovered || isActive;
-
   const lock = (next: boolean) => {
     onLockOrbit(next);
     document.body.style.cursor = next ? "pointer" : "auto";
   };
-
   return (
     <group position={hotspot.position}>
       <mesh
@@ -157,7 +137,6 @@ function Hotspot({
         <sphereGeometry args={[0.42, 16, 16]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
-
       <Html
         center
         sprite
@@ -202,7 +181,6 @@ function Hotspot({
             />
             <span className="relative">{hotspot.code}</span>
           </button>
-
           {isActive && (
             <div
               role="dialog"
@@ -263,32 +241,11 @@ function Hotspot({
     </group>
   );
 }
-
-function HeroModelLoader() {
-  return (
-    <Html center>
-      <div
-        role="status"
-        aria-label="Loading 3D model"
-        className="h-12 w-12 animate-spin rounded-full border-2 border-[#00F0FF]/20 border-t-[#00F0FF] shadow-[0_0_18px_2px_rgba(0,240,255,0.45)]"
-      />
-    </Html>
-  );
-}
-
-/**
- * Interactive hero centerpiece: a floating drone GLTF with three glowing
- * hotspots. Clicking 01 / 02 / 03 focuses the camera on that part and
- * slides in a glass detail card.
- */
 export function HeroModel() {
   return (
-    <Suspense fallback={<HeroModelLoader />}>
+    <Suspense fallback={null}>
       <HeroShape />
     </Suspense>
   );
 }
-
-export { HeroModelLoader };
-
 useGLTF.preload(DRONE_MODEL_PATH);

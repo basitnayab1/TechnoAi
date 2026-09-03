@@ -1,8 +1,4 @@
-/**
- * Fixed cyberpunk grid + ambient color blooms that sit behind the 3D
- * canvas and page sections. Clipped so the large blur orbs cannot cause
- * horizontal scroll.
- */
+
 export function AmbientBackdrop() {
   return (
     <div

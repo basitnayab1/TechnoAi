@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Suspense,
   useMemo,
@@ -27,21 +26,12 @@ import { CameraFocusProvider, CameraFocusRig, useCameraFocusOptional } from "./C
 import { CameraZoomProvider, CameraZoomRig, useCameraZoomOptional } from "./CameraZoom";
 import { DEFAULT_CAMERA } from "./hotspots";
 import { useCompactScene } from "./useCompactScene";
-
 interface SceneCanvasProps {
-  /** 3D subject rendered inside the studio. Falls back to a demo AI orb. */
   children?: ReactNode;
-  /** HUD composed by the page (e.g. HeroOverlay). Rendered over the canvas. */
   overlay?: ReactNode;
   className?: string;
-  /** Wheel-zoom. Off on the marketing homepage so the page can scroll. */
   enableZoom?: boolean;
 }
-
-/**
- * Studio WebGL scene. Layout is always `width/height: 100%` of the parent —
- * never `100vw` — so it cannot introduce a horizontal scrollbar.
- */
 export function SceneCanvas({
   children,
   overlay,
@@ -55,25 +45,15 @@ export function SceneCanvas({
     () => new Vector2(compact ? 0.0003 : 0.0006, compact ? 0.0003 : 0.0006),
     [compact]
   );
-
   return (
     <ExploreProvider>
     <CameraFocusProvider>
     <CameraZoomProvider>
-      {/*
-       * Root stacking context for the studio. On mobile this behaves as a
-       * flex column: the canvas wrapper below claims a fixed `45vh` at the
-       * top, and the (absolutely positioned) `overlay` lays its text panel
-       * out in the remaining `55vh` beneath it. On desktop the canvas
-       * wrapper grows to `h-screen` and the overlay resumes its classic
-       * full-bleed split look — see HeroOverlay.tsx.
-       */}
+      {}
       <div
         className={`relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-gradient-to-b from-[#030712] via-[#0B0F17] to-[#030712] ${className ?? ""}`}
       >
-        {/* Canvas wrapper: relative, full width, h-[45vh] on mobile so the
-         * drone stays fully visible above the text panel; h-screen on
-         * desktop restores the full-bleed backdrop behind the split overlay. */}
+        {}
         <div className="relative h-[45vh] w-full md:h-screen">
           <Canvas
             shadows={!compact}
@@ -95,7 +75,6 @@ export function SceneCanvas({
             style={{ width: "100%", height: "100%", background: "transparent" }}
           >
           <fog attach="fog" args={["#030712", compact ? 14 : 18, 40]} />
-
           <ambientLight intensity={0.35} color="#9CA3AF" />
           <directionalLight
             castShadow={!compact}
@@ -122,9 +101,7 @@ export function SceneCanvas({
             decay={2}
             color="#2563EB"
           />
-
           <Ground />
-
           <Sparkles
             count={compact ? 50 : 120}
             scale={[20, 10, 20]}
@@ -142,25 +119,14 @@ export function SceneCanvas({
             fade
             speed={0.4}
           />
-
           <group ref={subjectRef}>
             <Suspense fallback={null}>{children ?? <DemoOrb />}</Suspense>
           </group>
-
           <ExploreRig subjectRef={subjectRef} controlsRef={controlsRef} />
           <CameraFocusRig controlsRef={controlsRef} />
           <CameraZoomRig controlsRef={controlsRef} />
-
           <SceneControls controlsRef={controlsRef} enableZoom={enableZoom} />
-
-          {/*
-           * Single-pass post-processing stack. `postprocessing` merges
-           * Bloom + ChromaticAberration + Vignette into one shared fragment
-           * shader, so adding all three here costs roughly the same as one
-           * effect. Mobile ("compact") drops MSAA and renders the effect
-           * buffer at a reduced resolution to keep frame time low; desktop
-           * gets a touch more antialiasing since it has GPU headroom.
-           */}
+          {}
           <EffectComposer
             multisampling={compact ? 0 : 4}
             resolutionScale={compact ? 0.75 : 1}
@@ -187,7 +153,6 @@ export function SceneCanvas({
             className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:4rem_4rem]"
           />
         </div>
-
         {overlay}
       </div>
     </CameraZoomProvider>
@@ -195,7 +160,6 @@ export function SceneCanvas({
     </ExploreProvider>
   );
 }
-
 function SceneControls({
   controlsRef,
   enableZoom,
@@ -217,7 +181,6 @@ function SceneControls({
     ? 1.4
     : zoom?.minDistance ?? (explore?.state === "exploring" ? 2.2 : 3.5);
   const maxDistance = zoom?.maxDistance ?? 16;
-
   return (
     <OrbitControls
       ref={controlsRef}
@@ -234,7 +197,6 @@ function SceneControls({
     />
   );
 }
-
 function Ground() {
   return (
     <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.5, 0]}>
@@ -243,17 +205,14 @@ function Ground() {
     </mesh>
   );
 }
-
 function DemoOrb() {
   const ref = useRef<Mesh>(null);
   const explore = useExploreOptional();
-
   useFrame((_, delta) => {
     if (ref.current && !explore?.isSequencing) {
       ref.current.rotation.y += delta * 0.25;
     }
   });
-
   return (
     <mesh ref={ref} castShadow position={[0, 0, 0]}>
       <icosahedronGeometry args={[1.3, 1]} />

@@ -1,21 +1,13 @@
 export type HotspotId = "rotors" | "sensors" | "battery";
-
 export interface HotspotDefinition {
   id: HotspotId;
   code: "01" | "02" | "03";
   title: string;
   description: string;
-  /** Local position on the (unscaled) drone group. */
   position: [number, number, number];
-  /** Added to `position` to place the camera for a close-up. */
   cameraOffset: [number, number, number];
   cardPlacement: "up" | "down";
 }
-
-/**
- * 01 rotors, 02 AI sensors / core, 03 battery / frame.
- * Camera offsets are in the same local space as `position`.
- */
 export const HOTSPOTS: HotspotDefinition[] = [
   {
     id: "rotors",
@@ -48,9 +40,7 @@ export const HOTSPOTS: HotspotDefinition[] = [
     cardPlacement: "up",
   },
 ];
-
 export const DEFAULT_CAMERA: [number, number, number] = [0, 0, 6];
-
 export function getHotspot(id: string | null) {
   return HOTSPOTS.find((item) => item.id === id) ?? null;
 }

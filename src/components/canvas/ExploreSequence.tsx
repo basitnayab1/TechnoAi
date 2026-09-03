@@ -1,5 +1,4 @@
 "use client";
-
 import {
   createContext,
   useCallback,
@@ -19,9 +18,7 @@ import { gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { HERO_PLACEMENT, useCompactScene } from "./useCompactScene";
-
 export type ExploreState = "idle" | "flying" | "exploring" | "returning";
-
 interface ExploreContextValue {
   state: ExploreState;
   isBusy: boolean;
@@ -29,9 +26,7 @@ interface ExploreContextValue {
   trigger: () => void;
   complete: () => void;
 }
-
 const ExploreContext = createContext<ExploreContextValue | null>(null);
-
 export function useExplore() {
   const ctx = useContext(ExploreContext);
   if (!ctx) {
@@ -39,28 +34,23 @@ export function useExplore() {
   }
   return ctx;
 }
-
 export function useExploreOptional() {
   return useContext(ExploreContext);
 }
-
 export function ExploreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ExploreState>("idle");
   const stateRef = useRef(state);
   stateRef.current = state;
-
   const trigger = useCallback(() => {
     const current = stateRef.current;
     if (current === "flying" || current === "returning") return;
     setState(current === "idle" ? "flying" : "returning");
   }, []);
-
   const complete = useCallback(() => {
     const current = stateRef.current;
     if (current === "flying") setState("exploring");
     if (current === "returning") setState("idle");
   }, []);
-
   const value = useMemo<ExploreContextValue>(
     () => ({
       state,
@@ -71,29 +61,18 @@ export function ExploreProvider({ children }: { children: ReactNode }) {
     }),
     [state, trigger, complete]
   );
-
   return (
     <ExploreContext.Provider value={value}>{children}</ExploreContext.Provider>
   );
 }
-
 const REST_CAMERA = { x: 0, y: 0, z: 6 } as const;
 const LOOK_AT_COMPACT = { x: 0, y: 0.2, z: 0 } as const;
-
-/** Mid-arc drone waypoint, then a tight 3/4 close-up. */
 const FLY_WAYPOINT_COMPACT = { x: 3.35, y: 1.75, z: 5.6 } as const;
 const FLY_CLOSE_COMPACT = { x: 1.55, y: 0.72, z: 3.55 } as const;
-
 interface ExploreRigProps {
   subjectRef: MutableRefObject<Group | null>;
   controlsRef: MutableRefObject<OrbitControlsImpl | null>;
 }
-
-/**
- * GSAP-driven fly-in / reset. Lives inside the R3F tree so it can tween
- * `camera.position` and the subject group's rotation with a shared
- * `power3.inOut` timeline.
- */
 export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
   const { camera } = useThree();
   const { state, complete } = useExplore();
@@ -116,19 +95,15 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
   const flyClose = compact
     ? FLY_CLOSE_COMPACT
     : { x: 3.15, y: 0.7, z: 3.7 };
-
   useEffect(() => {
     const subject = subjectRef.current;
     const controls = controlsRef.current;
     if (!subject) return;
-
     timelineRef.current?.kill();
-
     const look = () => {
       camera.lookAt(lookAt.x, lookAt.y, lookAt.z);
       controls?.update();
     };
-
     if (state === "flying") {
       const tl = gsap.timeline({
         defaults: { ease: "power3.inOut" },
@@ -138,7 +113,6 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
           complete();
         },
       });
-
       tl.to(
         camera.position,
         { ...flyWaypoint, duration: 1.15, onUpdate: look },
@@ -156,10 +130,8 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
       );
       tl.to(subject.position, { y: 0.28, duration: 2.4 }, 0);
       tl.to(subject.scale, { x: 1.08, y: 1.08, z: 1.08, duration: 2.4 }, 0);
-
       timelineRef.current = tl;
     }
-
     if (state === "returning") {
       const tl = gsap.timeline({
         defaults: { ease: "power3.inOut" },
@@ -169,7 +141,6 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
           complete();
         },
       });
-
       tl.to(
         camera.position,
         { ...REST_CAMERA, duration: 1.8, onUpdate: look },
@@ -177,31 +148,25 @@ export function ExploreRig({ subjectRef, controlsRef }: ExploreRigProps) {
       );
       tl.to(subject.position, { y: 0, duration: 1.8 }, 0);
       tl.to(subject.scale, { x: 1, y: 1, z: 1, duration: 1.8 }, 0);
-
       timelineRef.current = tl;
     }
-
     return () => {
       timelineRef.current?.kill();
       timelineRef.current = null;
     };
   }, [camera, complete, controlsRef, flyClose, flyWaypoint, lookAt, state, subjectRef]);
-
   return null;
 }
-
 const LABELS: Record<ExploreState, string> = {
   idle: "EXPLORE",
   flying: "FLY",
   exploring: "RESET",
   returning: "FLY",
 };
-
 export function ExploreButton({ className }: { className?: string }) {
   const { state, isBusy, trigger } = useExplore();
   const label = LABELS[state];
   const Icon = state === "exploring" ? RotateCcw : Radar;
-
   return (
     <Button
       type="button"

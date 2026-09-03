@@ -1,5 +1,4 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -7,11 +6,9 @@ import { Button } from "@/components/ui/Button";
 import { fadeUp, springSoft } from "@/lib/motion";
 import { siteContent } from "@/lib/content";
 import { cn, glassPad, glassPanel } from "@/lib/utils";
-
 export function CTA() {
   const { title, description, primaryCta, secondaryCta } =
     siteContent.sections.cta;
-
   return (
     <section id="products" className="relative scroll-mt-8 py-24 sm:py-32">
       <Container>

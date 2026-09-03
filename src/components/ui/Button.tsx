@@ -1,9 +1,7 @@
 "use client";
-
 import { motion, useReducedMotion } from "framer-motion";
 import type { ButtonHTMLAttributes } from "react";
 import { cn, ctaMotion, ctaPrimary, ctaSecondary } from "@/lib/utils";
-
 type NativeButtonProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   | "onDrag"
@@ -13,17 +11,14 @@ type NativeButtonProps = Omit<
   | "onAnimationEnd"
   | "onAnimationIteration"
 >;
-
 interface ButtonProps extends NativeButtonProps {
   variant?: "primary" | "secondary" | "ghost";
 }
-
 const variantStyles: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary: ctaPrimary,
   secondary: ctaSecondary,
   ghost: "text-foreground/80 hover:text-foreground hover:bg-white/5",
 };
-
 export function Button({
   variant = "primary",
   className,
@@ -33,7 +28,6 @@ export function Button({
   ...props
 }: ButtonProps) {
   const reduce = useReducedMotion();
-
   return (
     <motion.button
       type={type}
