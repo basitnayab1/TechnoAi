@@ -23,6 +23,7 @@ import {
 } from "@/lib/utils";
 import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { useExploreOptional } from "@/components/canvas/ExploreSequence";
+import { useCameraFocusOptional } from "@/components/canvas/CameraFocus";
 import { BOOK_DEMO_EVENT } from "@/components/layout/Navbar";
 import { siteContent } from "@/lib/content";
 
@@ -77,15 +78,18 @@ function HeroCopy({
   onBookDemo: () => void;
 }) {
   const explore = useExploreOptional();
+  const focus = useCameraFocusOptional();
   const { fade, spring } = useMotionPrefs();
   const state = explore?.state ?? "idle";
   const isBusy = explore?.isBusy ?? false;
   const isExploring = state === "exploring";
+  const hotspotActive = Boolean(focus?.activeHotspot);
+  const showReset = hotspotActive || isExploring;
 
   const exploreLabel =
     state === "flying" || state === "returning"
       ? "Flying…"
-      : isExploring
+      : showReset
         ? "Reset View"
         : siteContent.hero.secondaryCta;
 
@@ -138,21 +142,25 @@ function HeroCopy({
         />
         <Button
           type="button"
-          variant={isExploring ? "secondary" : "primary"}
+          variant={showReset ? "secondary" : "primary"}
           disabled={isBusy}
           onClick={() => {
+            if (hotspotActive) {
+              focus?.resetView();
+              return;
+            }
             explore?.trigger();
           }}
           aria-busy={isBusy}
           className={cn(
             interactive,
             ctaMotion,
-            isExploring ? ctaSecondary : ctaPrimary,
+            showReset ? ctaSecondary : ctaPrimary,
             "relative z-10 w-full min-w-0 px-5 py-3 text-xs sm:w-auto sm:text-sm"
           )}
         >
-          {!isExploring && <ButtonShine />}
-          {isExploring ? (
+          {!showReset && <ButtonShine />}
+          {showReset ? (
             <RotateCcw className="relative h-4 w-4" />
           ) : (
             <Radar
@@ -160,7 +168,7 @@ function HeroCopy({
             />
           )}
           <span className="relative">{exploreLabel}</span>
-          {!isExploring && (
+          {!showReset && (
             <ArrowRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           )}
         </Button>

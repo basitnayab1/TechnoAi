@@ -23,6 +23,8 @@ import {
   ExploreRig,
   useExploreOptional,
 } from "./ExploreSequence";
+import { CameraFocusProvider, CameraFocusRig, useCameraFocusOptional } from "./CameraFocus";
+import { DEFAULT_CAMERA } from "./hotspots";
 import { useCompactScene } from "./useCompactScene";
 
 interface SceneCanvasProps {
@@ -55,6 +57,7 @@ export function SceneCanvas({
 
   return (
     <ExploreProvider>
+    <CameraFocusProvider>
       {/*
        * Root stacking context for the studio. On mobile this behaves as a
        * flex column: the canvas wrapper below claims a fixed `45vh` at the
@@ -74,7 +77,7 @@ export function SceneCanvas({
             shadows={!compact}
             dpr={compact ? [1, 1.25] : [1, 2]}
             camera={{
-              position: compact ? [0, 0, 5] : [0, 2.2, 8],
+              position: compact ? [0, 0.35, 5.2] : DEFAULT_CAMERA,
               fov: compact ? 60 : 45,
             }}
             gl={{
@@ -86,7 +89,7 @@ export function SceneCanvas({
             onCreated={({ gl }) => {
               gl.setClearColor(0x000000, 0);
             }}
-            className="absolute inset-0 block h-full w-full touch-none bg-transparent"
+            className="absolute inset-0 z-[2] block h-full w-full touch-none bg-transparent"
             style={{ width: "100%", height: "100%", background: "transparent" }}
           >
           <fog attach="fog" args={["#030712", compact ? 14 : 18, 40]} />
@@ -143,6 +146,7 @@ export function SceneCanvas({
           </group>
 
           <ExploreRig subjectRef={subjectRef} controlsRef={controlsRef} />
+          <CameraFocusRig controlsRef={controlsRef} />
 
           <SceneControls controlsRef={controlsRef} enableZoom={enableZoom} />
 
@@ -183,6 +187,7 @@ export function SceneCanvas({
 
         {overlay}
       </div>
+    </CameraFocusProvider>
     </ExploreProvider>
   );
 }
@@ -195,9 +200,13 @@ function SceneControls({
   enableZoom: boolean;
 }) {
   const explore = useExploreOptional();
+  const focus = useCameraFocusOptional();
   const compact = useCompactScene();
   const interactive =
-    !explore || explore.state === "idle" || explore.state === "exploring";
+    (!explore || explore.state === "idle" || explore.state === "exploring") &&
+    !focus?.isAnimating &&
+    !focus?.orbitLocked &&
+    !focus?.activeHotspot;
 
   return (
     <OrbitControls
@@ -207,7 +216,7 @@ function SceneControls({
       dampingFactor={0.06}
       enablePan={false}
       enableZoom={enableZoom}
-      minDistance={explore?.state === "exploring" ? 2.2 : 3.5}
+      minDistance={focus?.activeHotspot ? 1.4 : explore?.state === "exploring" ? 2.2 : 3.5}
       maxDistance={16}
       minPolarAngle={0.15}
       maxPolarAngle={Math.PI / 2 - 0.05}

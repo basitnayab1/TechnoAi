@@ -77,7 +77,7 @@ export function ExploreProvider({ children }: { children: ReactNode }) {
   );
 }
 
-const REST_CAMERA = { x: 0, y: 2.2, z: 8 } as const;
+const REST_CAMERA = { x: 0, y: 0, z: 6 } as const;
 const LOOK_AT_COMPACT = { x: 0, y: 0.2, z: 0 } as const;
 
 /** Mid-arc drone waypoint, then a tight 3/4 close-up. */
