@@ -29,6 +29,8 @@ interface CameraFocusContextValue {
   setOrbitLocked: (locked: boolean) => void;
   focusHotspot: (id: HotspotId) => void;
   resetView: () => void;
+  /** True for a short window after reset so a leftover click cannot start Explore. */
+  shouldIgnoreExplore: () => boolean;
 }
 
 const CameraFocusContext = createContext<CameraFocusContextValue | null>(null);
@@ -50,13 +52,21 @@ export function CameraFocusProvider({ children }: { children: ReactNode }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [orbitLocked, setOrbitLocked] = useState(false);
 
+  const ignoreExploreUntil = useRef(0);
+
   const focusHotspot = useCallback((id: HotspotId) => {
     setActiveHotspot((current) => (current === id ? null : id));
   }, []);
 
   const resetView = useCallback(() => {
     setActiveHotspot(null);
+    ignoreExploreUntil.current = Date.now() + 500;
   }, []);
+
+  const shouldIgnoreExplore = useCallback(
+    () => Date.now() < ignoreExploreUntil.current,
+    []
+  );
 
   const value = useMemo<CameraFocusContextValue>(
     () => ({
@@ -67,8 +77,16 @@ export function CameraFocusProvider({ children }: { children: ReactNode }) {
       setOrbitLocked,
       focusHotspot,
       resetView,
+      shouldIgnoreExplore,
     }),
-    [activeHotspot, focusHotspot, isAnimating, orbitLocked, resetView]
+    [
+      activeHotspot,
+      focusHotspot,
+      isAnimating,
+      orbitLocked,
+      resetView,
+      shouldIgnoreExplore,
+    ]
   );
 
   return (

@@ -218,9 +218,14 @@ function Hotspot({
               <button
                 type="button"
                 aria-label="Close details"
+                onPointerDown={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  onReset();
+                }}
                 onClick={(event) => {
                   event.stopPropagation();
-                  onReset();
+                  event.preventDefault();
                 }}
                 className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full border border-slate-700/80 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
               >
@@ -237,9 +242,14 @@ function Hotspot({
               </p>
               <button
                 type="button"
+                onPointerDown={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  onReset();
+                }}
                 onClick={(event) => {
                   event.stopPropagation();
-                  onReset();
+                  event.preventDefault();
                 }}
                 className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-cyan-400 hover:text-cyan-300"
               >

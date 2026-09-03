@@ -149,6 +149,7 @@ function HeroCopy({
               focus?.resetView();
               return;
             }
+            if (focus?.shouldIgnoreExplore()) return;
             explore?.trigger();
           }}
           aria-busy={isBusy}
