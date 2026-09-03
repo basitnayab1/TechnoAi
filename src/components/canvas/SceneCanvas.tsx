@@ -24,6 +24,7 @@ import {
   useExploreOptional,
 } from "./ExploreSequence";
 import { CameraFocusProvider, CameraFocusRig, useCameraFocusOptional } from "./CameraFocus";
+import { CameraZoomProvider, CameraZoomRig, useCameraZoomOptional } from "./CameraZoom";
 import { DEFAULT_CAMERA } from "./hotspots";
 import { useCompactScene } from "./useCompactScene";
 
@@ -58,6 +59,7 @@ export function SceneCanvas({
   return (
     <ExploreProvider>
     <CameraFocusProvider>
+    <CameraZoomProvider>
       {/*
        * Root stacking context for the studio. On mobile this behaves as a
        * flex column: the canvas wrapper below claims a fixed `45vh` at the
@@ -147,6 +149,7 @@ export function SceneCanvas({
 
           <ExploreRig subjectRef={subjectRef} controlsRef={controlsRef} />
           <CameraFocusRig controlsRef={controlsRef} />
+          <CameraZoomRig controlsRef={controlsRef} />
 
           <SceneControls controlsRef={controlsRef} enableZoom={enableZoom} />
 
@@ -187,6 +190,7 @@ export function SceneCanvas({
 
         {overlay}
       </div>
+    </CameraZoomProvider>
     </CameraFocusProvider>
     </ExploreProvider>
   );
@@ -201,12 +205,18 @@ function SceneControls({
 }) {
   const explore = useExploreOptional();
   const focus = useCameraFocusOptional();
+  const zoom = useCameraZoomOptional();
   const compact = useCompactScene();
   const interactive =
     (!explore || explore.state === "idle" || explore.state === "exploring") &&
     !focus?.isAnimating &&
     !focus?.orbitLocked &&
-    !focus?.activeHotspot;
+    !focus?.activeHotspot &&
+    !zoom?.isZooming;
+  const minDistance = focus?.activeHotspot
+    ? 1.4
+    : zoom?.minDistance ?? (explore?.state === "exploring" ? 2.2 : 3.5);
+  const maxDistance = zoom?.maxDistance ?? 16;
 
   return (
     <OrbitControls
@@ -216,8 +226,8 @@ function SceneControls({
       dampingFactor={0.06}
       enablePan={false}
       enableZoom={enableZoom}
-      minDistance={focus?.activeHotspot ? 1.4 : explore?.state === "exploring" ? 2.2 : 3.5}
-      maxDistance={16}
+      minDistance={minDistance}
+      maxDistance={maxDistance}
       minPolarAngle={0.15}
       maxPolarAngle={Math.PI / 2 - 0.05}
       target={compact ? [0, 0.2, 0] : [2, 0.2, 0]}

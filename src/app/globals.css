@@ -86,6 +86,46 @@ body {
   animation-play-state: paused !important;
 }
 
+.drone-zoom-slider {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  appearance: none;
+  background: transparent;
+  touch-action: none;
+}
+
+.drone-zoom-slider::-webkit-slider-runnable-track {
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(to top, #1e293b, #22d3ee66);
+}
+
+.drone-zoom-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-left: -5px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 211, 238, 0.8);
+  background: #22d3ee;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.55);
+}
+
+.drone-zoom-slider::-moz-range-track {
+  width: 4px;
+  border-radius: 999px;
+  background: #1e293b;
+}
+
+.drone-zoom-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(34, 211, 238, 0.8);
+  border-radius: 999px;
+  background: #22d3ee;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.55);
+}
+
 ::selection {
   background: rgba(109, 91, 255, 0.35);
 }

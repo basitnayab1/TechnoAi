@@ -1,0 +1,118 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { ZoomIn, ZoomOut } from "lucide-react";
+import { cn, glassPanel } from "@/lib/utils";
+import { useCameraZoomOptional } from "@/components/canvas/CameraZoom";
+
+const interactive = "pointer-events-auto";
+
+/**
+ * Glass zoom HUD for the hero drone. Mouse-wheel zoom stays off on the
+ * homepage so the page can still scroll; this panel (and pinch on the
+ * canvas) is the explicit zoom control.
+ */
+export function ZoomControls() {
+  const zoom = useCameraZoomOptional();
+  const holdRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (holdRef.current) window.clearInterval(holdRef.current);
+    };
+  }, []);
+
+  if (!zoom) return null;
+
+  const { distance, minDistance, maxDistance, canZoomIn, canZoomOut, isBusy } =
+    zoom;
+  const span = Math.max(maxDistance - minDistance, 0.001);
+  const zoomPct = ((maxDistance - distance) / span) * 100;
+
+  const stopHold = () => {
+    if (holdRef.current) {
+      window.clearInterval(holdRef.current);
+      holdRef.current = null;
+    }
+  };
+
+  const startHold = (action: () => void) => {
+    action();
+    stopHold();
+    holdRef.current = window.setInterval(action, 340);
+  };
+
+  return (
+    <div
+        className={cn(
+          interactive,
+          glassPanel,
+          "flex select-none flex-col items-center gap-2 px-2 py-3 shadow-[0_0_24px_rgba(0,240,255,0.12)] touch-none"
+        )}
+      role="group"
+      aria-label="Drone zoom"
+    >
+      <button
+        type="button"
+        aria-label="Zoom in"
+        disabled={isBusy || !canZoomIn}
+        onPointerDown={(event) => {
+          event.preventDefault();
+          startHold(zoom.zoomIn);
+        }}
+        onPointerUp={stopHold}
+        onPointerLeave={stopHold}
+        onPointerCancel={stopHold}
+        className={cn(
+          "flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700/80 bg-slate-900/50 text-cyan-300 transition-all duration-200",
+          "hover:border-cyan-400/70 hover:text-white hover:shadow-[0_0_16px_rgba(0,240,255,0.35)]",
+          "disabled:pointer-events-none disabled:opacity-40"
+        )}
+      >
+        <ZoomIn className="h-4 w-4" />
+      </button>
+
+      <input
+        type="range"
+        min={0}
+        max={100}
+        step={1}
+        value={Math.round(zoomPct)}
+        disabled={isBusy}
+        aria-label="Zoom level"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(zoomPct)}
+        onChange={(event) => {
+          const pct = Number(event.target.value);
+          zoom.setDistance(maxDistance - (pct / 100) * span);
+        }}
+        className="drone-zoom-slider h-24 w-6 cursor-pointer accent-cyan-400 disabled:cursor-not-allowed disabled:opacity-40"
+      />
+
+      <button
+        type="button"
+        aria-label="Zoom out"
+        disabled={isBusy || !canZoomOut}
+        onPointerDown={(event) => {
+          event.preventDefault();
+          startHold(zoom.zoomOut);
+        }}
+        onPointerUp={stopHold}
+        onPointerLeave={stopHold}
+        onPointerCancel={stopHold}
+        className={cn(
+          "flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700/80 bg-slate-900/50 text-cyan-300 transition-all duration-200",
+          "hover:border-cyan-400/70 hover:text-white hover:shadow-[0_0_16px_rgba(0,240,255,0.35)]",
+          "disabled:pointer-events-none disabled:opacity-40"
+        )}
+      >
+        <ZoomOut className="h-4 w-4" />
+      </button>
+
+      <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-400/80">
+        Zoom
+      </span>
+    </div>
+  );
+}

@@ -20,13 +20,9 @@ export default function HeroModelDemoPage() {
       <AmbientBackdrop />
       <Navbar />
       <div className="absolute inset-0 z-0 h-full w-full">
-        <SceneCanvas className="h-full w-full">
+        <SceneCanvas className="h-full w-full" overlay={<HeroOverlay />}>
           <HeroModel />
         </SceneCanvas>
-      </div>
-
-      <div className="relative z-10 h-full w-full pointer-events-none">
-        <HeroOverlay />
       </div>
     </main>
   );

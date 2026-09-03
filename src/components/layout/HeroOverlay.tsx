@@ -25,6 +25,7 @@ import { fadeUp, springSoft, useMotionPrefs } from "@/lib/motion";
 import { useExploreOptional } from "@/components/canvas/ExploreSequence";
 import { useCameraFocusOptional } from "@/components/canvas/CameraFocus";
 import { BOOK_DEMO_EVENT } from "@/components/layout/Navbar";
+import { ZoomControls } from "@/components/layout/ZoomControls";
 import { siteContent } from "@/lib/content";
 
 const SPEC_ICONS = [Globe2, Radar, Workflow] as const;
@@ -63,6 +64,10 @@ export function HeroOverlay() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-[55vh] min-h-0 min-w-0 flex-col justify-center gap-3 overflow-x-hidden overflow-y-auto px-4 pb-4 pt-3 sm:gap-4 sm:px-5 sm:pb-5 md:relative md:h-auto md:flex-1 md:justify-between md:gap-6 md:px-6 md:pb-8 md:pt-24 lg:px-10 lg:pb-10 lg:pt-28">
         <HeroCopy onBookDemo={() => setDemoOpen(true)} />
         <SpecsRow />
+      </div>
+
+      <div className="pointer-events-none absolute right-3 top-24 z-30 md:right-6 md:top-1/2 md:-translate-y-[42%]">
+        <ZoomControls />
       </div>
 
       <AnimatePresence>
