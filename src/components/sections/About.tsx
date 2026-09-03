@@ -45,11 +45,11 @@ export function About() {
           <motion.p
             {...fade}
             transition={{ ...spring, delay: 0.18 }}
-            className="text-sm leading-relaxed text-foreground/70"
+            className="text-sm leading-relaxed text-[#9CA3AF]"
           >
             {body}
           </motion.p>
-          <ul className="flex flex-col gap-4 text-sm text-foreground/70">
+          <ul className="flex flex-col gap-4 text-sm text-[#9CA3AF]">
             {siteContent.whyChoose.map((item, index) => (
               <motion.li
                 key={item.title}
@@ -92,7 +92,7 @@ export function About() {
                 </span>
                 <div>
                   <div className="text-lg font-semibold">{service.title}</div>
-                  <p className="mt-1 text-sm text-foreground/60">
+                  <p className="mt-1 text-sm text-[#9CA3AF]">
                     {service.description}
                   </p>
                 </div>

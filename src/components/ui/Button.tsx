@@ -39,7 +39,7 @@ export function Button({
       type={type}
       disabled={disabled}
       className={cn(
-        "group relative inline-flex items-center justify-center gap-2 px-5 py-3 text-xs will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 disabled:pointer-events-none disabled:opacity-50 sm:text-sm",
+        "group relative inline-flex items-center justify-center gap-2 px-5 py-3 text-xs will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00F0FF]/60 disabled:pointer-events-none disabled:opacity-50 sm:text-sm",
         reduce
           ? "pointer-events-auto rounded-xl font-semibold tracking-wide transition-all duration-300"
           : ctaMotion,

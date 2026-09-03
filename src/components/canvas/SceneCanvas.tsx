@@ -69,7 +69,7 @@ export function SceneCanvas({
        * full-bleed split look — see HeroOverlay.tsx.
        */}
       <div
-        className={`relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-transparent ${className ?? ""}`}
+        className={`relative flex h-full w-full min-w-0 flex-col overflow-hidden bg-gradient-to-b from-[#030712] via-[#0B0F17] to-[#030712] ${className ?? ""}`}
       >
         {/* Canvas wrapper: relative, full width, h-[45vh] on mobile so the
          * drone stays fully visible above the text panel; h-screen on
@@ -96,12 +96,12 @@ export function SceneCanvas({
           >
           <fog attach="fog" args={["#030712", compact ? 14 : 18, 40]} />
 
-          <ambientLight intensity={0.35} color="#8892b0" />
+          <ambientLight intensity={0.35} color="#9CA3AF" />
           <directionalLight
             castShadow={!compact}
             position={[5, 8, 4]}
             intensity={1.4}
-            color="#ffffff"
+            color="#F9FAFB"
             shadow-mapSize-width={compact ? 1024 : 2048}
             shadow-mapSize-height={compact ? 1024 : 2048}
             shadow-camera-near={0.5}
@@ -113,14 +113,14 @@ export function SceneCanvas({
             intensity={compact ? 12 : 18}
             distance={14}
             decay={2}
-            color="#22d3ee"
+            color="#00F0FF"
           />
           <pointLight
             position={[4.5, 1.5, -3]}
             intensity={compact ? 12 : 18}
             distance={14}
             decay={2}
-            color="#a855f7"
+            color="#2563EB"
           />
 
           <Ground />
@@ -131,7 +131,7 @@ export function SceneCanvas({
             size={compact ? 1.6 : 2.2}
             speed={0.3}
             opacity={0.45}
-            color="#8a6fff"
+            color="#00F0FF"
           />
           <Stars
             radius={60}
@@ -184,7 +184,7 @@ export function SceneCanvas({
           </Canvas>
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,#1f293715_1px,transparent_1px),linear-gradient(to_bottom,#1f293715_1px,transparent_1px)] bg-[size:4rem_4rem]"
+            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:4rem_4rem]"
           />
         </div>
 
@@ -258,10 +258,10 @@ function DemoOrb() {
     <mesh ref={ref} castShadow position={[0, 0, 0]}>
       <icosahedronGeometry args={[1.3, 1]} />
       <meshStandardMaterial
-        color="#6d5bff"
+        color="#00F0FF"
         metalness={0.7}
         roughness={0.2}
-        emissive="#3a2bd1"
+        emissive="#2563EB"
         emissiveIntensity={0.25}
       />
     </mesh>

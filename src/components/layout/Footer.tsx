@@ -14,7 +14,7 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer id="contact" className="border-t border-slate-800/80 bg-[#0b0f17]/75">
+    <footer id="contact" className="border-t border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)]">
       <Container className="grid min-w-0 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <motion.div
           variants={fadeUp}
@@ -32,10 +32,10 @@ export function Footer() {
               Techno<span className="text-primary-300">Ai</span>
             </span>
           </a>
-          <p className="max-w-xs text-sm text-foreground/60">
+          <p className="max-w-xs text-sm text-[#9CA3AF]">
             {siteContent.company.blurb}
           </p>
-          <ul className="flex flex-col gap-2 pt-1 text-sm text-foreground/55">
+          <ul className="flex flex-col gap-2 pt-1 text-sm text-[#9CA3AF]">
             {siteContent.company.locations.map((location) => (
               <li key={location.label} className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-300" />
@@ -54,7 +54,7 @@ export function Footer() {
               <a
                 key={i}
                 href={i === 0 ? "mailto:info@technoai.ae" : "https://technoai.ae/"}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-800/80 bg-[#0b0f17]/70 text-foreground/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md transition-all duration-300 hover:border-cyan-500/50 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(0,240,255,0.15)]"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)] text-[#9CA3AF] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md transition-all duration-300 hover:border-[rgba(0,240,255,0.2)] hover:text-[#00F0FF] hover:shadow-[0_0_20px_rgba(0,240,255,0.15)]"
               >
                 <Icon className="h-4 w-4" />
               </a>
@@ -79,7 +79,7 @@ export function Footer() {
               <a
                 key={link}
                 href={column.title === "Services" ? "#services" : "#solutions"}
-                className="text-sm text-foreground/60 transition-colors hover:text-foreground"
+                className="text-sm text-[#9CA3AF] transition-colors hover:text-[#F9FAFB]"
               >
                 {link}
               </a>

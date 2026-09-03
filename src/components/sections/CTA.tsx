@@ -29,10 +29,10 @@ export function CTA() {
         >
           <div className="absolute inset-0 bg-radial-fade" />
           <div className="relative z-10 flex flex-col items-center gap-6">
-            <h2 className="max-w-2xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h2 className="max-w-2xl text-balance bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
               {title}
             </h2>
-            <p className="max-w-xl text-balance text-foreground/60">
+            <p className="max-w-xl text-balance text-[#9CA3AF]">
               {description}
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">

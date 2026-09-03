@@ -3,11 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --background: #05050a;
-  --foreground: #f4f4f8;
-  --surface: #0d0d16;
-  --surface-muted: #12121e;
+  --background: #030712;
+  --foreground: #f9fafb;
+  --muted: #9ca3af;
+  --surface: #0b0f17;
+  --glass: rgba(11, 15, 23, 0.75);
   --border: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(0, 240, 255, 0.2);
+  --accent-cyan: #00f0ff;
+  --accent-cyan-deep: #06b6d4;
+  --accent-blue: #2563eb;
+  --hotspot: #10b981;
 }
 
 * {
@@ -31,13 +37,25 @@ body {
     text-wrap: balance;
   }
 
+  .text-heading-glow {
+    background-image: linear-gradient(
+      to right,
+      #ffffff,
+      #e2e8f0,
+      #00f0ff
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .text-shimmer {
     background-image: linear-gradient(
       90deg,
       #ffffff 0%,
-      #ab99ff 28%,
-      #00e5c7 50%,
-      #ab99ff 72%,
+      #00f0ff 28%,
+      #06b6d4 50%,
+      #2563eb 72%,
       #ffffff 100%
     );
     background-size: 200% auto;
@@ -50,8 +68,17 @@ body {
   .bg-radial-fade {
     background: radial-gradient(
       ellipse 80% 60% at 50% 0%,
-      rgba(109, 91, 255, 0.25),
+      rgba(0, 240, 255, 0.18),
       transparent 70%
+    );
+  }
+
+  .bg-brand-hero {
+    background-image: linear-gradient(
+      to bottom,
+      #030712,
+      #0b0f17,
+      #030712
     );
   }
 }
@@ -97,7 +124,7 @@ body {
 .drone-zoom-slider::-webkit-slider-runnable-track {
   width: 4px;
   border-radius: 999px;
-  background: linear-gradient(to top, #1e293b, #22d3ee66);
+  background: linear-gradient(to top, #0b0f17, #00f0ff66);
 }
 
 .drone-zoom-slider::-webkit-slider-thumb {
@@ -106,28 +133,29 @@ body {
   height: 14px;
   margin-left: -5px;
   border-radius: 999px;
-  border: 1px solid rgba(34, 211, 238, 0.8);
-  background: #22d3ee;
+  border: 1px solid rgba(0, 240, 255, 0.8);
+  background: #00f0ff;
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.55);
 }
 
 .drone-zoom-slider::-moz-range-track {
   width: 4px;
   border-radius: 999px;
-  background: #1e293b;
+  background: #0b0f17;
 }
 
 .drone-zoom-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
-  border: 1px solid rgba(34, 211, 238, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.8);
   border-radius: 999px;
-  background: #22d3ee;
+  background: #00f0ff;
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.55);
 }
 
 ::selection {
-  background: rgba(109, 91, 255, 0.35);
+  background: rgba(0, 240, 255, 0.28);
+  color: #f9fafb;
 }
 
 /* Scrollbar */
@@ -138,9 +166,10 @@ body {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a3a;
+  background: #0b0f17;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a52;
+  background: #2563eb;
 }

@@ -188,15 +188,15 @@ function Hotspot({
               lock(false);
             }}
             className={cn(
-              "relative flex h-10 w-10 select-none items-center justify-center rounded-full border border-cyan-400/60 bg-black/40 font-mono text-xs font-bold tracking-widest text-cyan-300 backdrop-blur-sm transition-all duration-300 ease-out lg:text-sm",
+              "relative flex h-10 w-10 select-none items-center justify-center rounded-full border border-[rgba(0,240,255,0.2)] bg-[rgba(11,15,23,0.75)] font-mono text-xs font-bold tracking-widest text-[#00F0FF] backdrop-blur-sm transition-all duration-300 ease-out lg:text-sm",
               "shadow-[0_0_12px_2px_rgba(0,240,255,0.25)]",
               highlighted &&
-                "scale-125 border-cyan-400 bg-cyan-400/20 text-white shadow-[0_0_26px_6px_rgba(0,240,255,0.55)]"
+                "scale-125 border-[#00F0FF] bg-[#00F0FF]/20 text-[#F9FAFB] shadow-[0_0_26px_6px_rgba(0,240,255,0.55)]"
             )}
           >
             <span
               className={cn(
-                "pointer-events-none absolute -inset-1 rounded-full border border-cyan-400/30 animate-ping",
+                "pointer-events-none absolute -inset-1 rounded-full border border-[#10B981]/50 animate-ping",
                 isActive && "pause-anim"
               )}
             />
@@ -209,7 +209,7 @@ function Hotspot({
               aria-label={hotspot.title}
               className={cn(
                 "pointer-events-auto absolute left-1/2 z-50 w-52 max-w-[70vw] -translate-x-1/2 animate-fade-up text-left sm:w-56",
-                "rounded-xl border border-cyan-500/40 bg-[#0b0f17]/90 p-4 shadow-[0_0_25px_rgba(0,240,255,0.2)] backdrop-blur-lg",
+                "rounded-xl border border-[rgba(0,240,255,0.2)] bg-[rgba(11,15,23,0.75)] p-4 shadow-[0_0_25px_rgba(0,240,255,0.2)] backdrop-blur-lg",
                 hotspot.cardPlacement === "up"
                   ? "bottom-full mb-3"
                   : "top-full mt-3"
@@ -227,17 +227,17 @@ function Hotspot({
                   event.stopPropagation();
                   event.preventDefault();
                 }}
-                className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full border border-slate-700/80 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
+                className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full border border-[rgba(255,255,255,0.08)] text-[#9CA3AF] hover:border-[rgba(0,240,255,0.2)] hover:text-[#00F0FF]"
               >
                 <X className="h-3 w-3" />
               </button>
-              <p className="font-mono text-xs font-bold tracking-widest text-cyan-300">
+              <p className="font-mono text-xs font-bold tracking-widest text-[#00F0FF]">
                 {hotspot.code}
               </p>
-              <h4 className="mt-1 pr-6 text-sm font-semibold leading-snug text-white">
+              <h4 className="mt-1 pr-6 text-sm font-semibold leading-snug text-[#F9FAFB]">
                 {hotspot.title}
               </h4>
-              <p className="mt-1.5 text-xs leading-relaxed text-slate-300">
+              <p className="mt-1.5 text-xs leading-relaxed text-[#9CA3AF]">
                 {hotspot.description}
               </p>
               <button
@@ -251,7 +251,7 @@ function Hotspot({
                   event.stopPropagation();
                   event.preventDefault();
                 }}
-                className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-cyan-400 hover:text-cyan-300"
+                className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#00F0FF] hover:text-[#5AF0FF]"
               >
                 <RotateCcw className="h-3 w-3" />
                 Reset View
@@ -270,7 +270,7 @@ function HeroModelLoader() {
       <div
         role="status"
         aria-label="Loading 3D model"
-        className="h-12 w-12 animate-spin rounded-full border-2 border-primary-300/20 border-t-accent shadow-[0_0_18px_2px_rgba(0,229,199,0.45)]"
+        className="h-12 w-12 animate-spin rounded-full border-2 border-[#00F0FF]/20 border-t-[#00F0FF] shadow-[0_0_18px_2px_rgba(0,240,255,0.45)]"
       />
     </Html>
   );

@@ -37,7 +37,7 @@ export function SectionHeading({
         <motion.span
           variants={fadeUp}
           transition={springSoft}
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-300"
+          className="text-xs font-semibold uppercase tracking-[0.2em] text-[#00F0FF]"
         >
           {eyebrow}
         </motion.span>
@@ -45,7 +45,7 @@ export function SectionHeading({
       <motion.h2
         variants={fadeUp}
         transition={springSoft}
-        className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl"
+        className="text-balance bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl"
       >
         {title}
       </motion.h2>
@@ -53,7 +53,7 @@ export function SectionHeading({
         <motion.p
           variants={fadeUp}
           transition={springSoft}
-          className="max-w-2xl text-balance text-base text-foreground/60 sm:text-lg"
+          className="max-w-2xl text-balance text-base text-[#9CA3AF] sm:text-lg"
         >
           {description}
         </motion.p>

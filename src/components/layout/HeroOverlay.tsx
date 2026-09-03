@@ -59,7 +59,7 @@ export function HeroOverlay() {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex min-w-0 max-w-full flex-col overflow-x-hidden">
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] w-full max-w-full bg-gradient-to-t from-[#0b0f17]/90 via-[#0b0f17]/55 to-transparent md:inset-y-0 md:left-0 md:top-0 md:h-full md:w-[min(58%,40rem)] md:bg-gradient-to-r md:from-[#0b0f17]/85 md:via-[#0b0f17]/40 md:to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55vh] w-full max-w-full bg-gradient-to-b from-[#030712] via-[#0B0F17]/90 to-[#030712]/40 md:inset-y-0 md:left-0 md:top-0 md:h-full md:w-[min(58%,40rem)] md:bg-gradient-to-r md:from-[#030712] md:via-[#0B0F17]/80 md:to-transparent" />
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-[55vh] min-h-0 min-w-0 flex-col justify-center gap-3 overflow-x-hidden overflow-y-auto px-4 pb-4 pt-3 sm:gap-4 sm:px-5 sm:pb-5 md:relative md:h-auto md:flex-1 md:justify-between md:gap-6 md:px-6 md:pb-8 md:pt-24 lg:px-10 lg:pb-10 lg:pt-28">
         <HeroCopy onBookDemo={() => setDemoOpen(true)} />
@@ -103,16 +103,16 @@ function HeroCopy({
       <motion.span
         {...fade}
         transition={{ ...spring, delay: 0.05 }}
-        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-700/50 bg-slate-900/60 px-4 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md sm:gap-2"
+        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-[rgba(0,240,255,0.2)] bg-[rgba(11,15,23,0.75)] px-4 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[#00F0FF] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md sm:gap-2"
       >
-        <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-accent" />
+        <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[#00F0FF] shadow-[0_0_10px_rgba(0,240,255,0.8)]" />
         <span className="truncate">{siteContent.hero.eyebrow}</span>
       </motion.span>
 
       <motion.h1
         {...fade}
         transition={{ ...spring, delay: 0.16 }}
-        className="max-w-full text-balance break-words text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl md:font-extrabold md:leading-[1.15] lg:text-6xl"
+        className="max-w-full text-balance break-words bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-2xl font-bold leading-tight tracking-tight text-transparent sm:text-3xl md:text-4xl md:font-extrabold md:leading-[1.15] lg:text-6xl"
       >
         {siteContent.hero.title} {siteContent.hero.titleAccent}
       </motion.h1>
@@ -120,14 +120,14 @@ function HeroCopy({
       <motion.p
         {...fade}
         transition={{ ...spring, delay: 0.28 }}
-        className="max-w-full truncate text-pretty text-xs leading-snug text-slate-400 sm:hidden sm:text-sm"
+        className="max-w-full truncate text-pretty text-xs leading-snug text-[#9CA3AF] sm:hidden sm:text-sm"
       >
         {siteContent.hero.descriptionShort}
       </motion.p>
       <motion.p
         {...fade}
         transition={{ ...spring, delay: 0.28 }}
-        className="hidden max-w-xl text-pretty text-base leading-relaxed text-slate-300 sm:block lg:text-lg"
+        className="hidden max-w-xl text-pretty text-base leading-relaxed text-[#9CA3AF] sm:block lg:text-lg"
       >
         {siteContent.hero.description}
       </motion.p>
@@ -139,11 +139,11 @@ function HeroCopy({
       >
         <span
           aria-hidden
-          className="pointer-events-none absolute -left-6 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-3xl"
+          className="pointer-events-none absolute -left-6 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-[#00F0FF]/15 blur-3xl"
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute right-4 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-blue-600/10 blur-3xl sm:-right-4"
+          className="pointer-events-none absolute right-4 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-[#2563EB]/15 blur-3xl sm:-right-4"
         />
         <Button
           type="button"
@@ -217,14 +217,14 @@ function SpecsRow() {
               "flex min-w-0 items-center gap-1.5 will-change-transform sm:gap-2.5 md:gap-3"
             )}
           >
-            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary-300 sm:h-8 sm:w-8 md:h-9 md:w-9 md:rounded-xl">
+            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-[#00F0FF]/15 text-[#00F0FF] sm:h-8 sm:w-8 md:h-9 md:w-9 md:rounded-xl">
               <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
             </span>
             <span className="flex min-w-0 flex-col">
-              <span className="truncate font-mono text-xs font-bold tracking-widest text-cyan-300 lg:text-sm">
+              <span className="truncate font-mono text-xs font-bold tracking-widest text-[#00F0FF] lg:text-sm">
                 {spec.value}
               </span>
-              <span className="truncate text-[8px] uppercase tracking-[0.08em] text-foreground/50 sm:text-[10px] sm:tracking-[0.1em] md:text-[11px] md:tracking-[0.14em]">
+              <span className="truncate text-[8px] uppercase tracking-[0.08em] text-[#9CA3AF] sm:text-[10px] sm:tracking-[0.1em] md:text-[11px] md:tracking-[0.14em]">
                 {spec.label}
               </span>
             </span>
@@ -246,7 +246,7 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
       <button
         type="button"
         aria-label="Dismiss demo dialog"
-        className={cn(interactive, "absolute inset-0 bg-[#030712]/50")}
+        className={cn(interactive, "absolute inset-0 bg-[#030712]/70")}
         onClick={onClose}
       />
       <motion.div
@@ -274,13 +274,16 @@ function DemoPanel({ onClose }: { onClose: () => void }) {
         >
           <X className="h-4 w-4" />
         </button>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#00F0FF]">
           {siteContent.hero.primaryCta}
         </p>
-        <h2 id="demo-title" className="mt-2 text-2xl font-semibold tracking-tight">
+        <h2
+          id="demo-title"
+          className="mt-2 bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-2xl font-semibold tracking-tight text-transparent"
+        >
           {siteContent.sections.cta.title}
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-foreground/60">
+        <p className="mt-3 text-sm leading-relaxed text-[#9CA3AF]">
           {siteContent.sections.cta.description}
         </p>
         <a

@@ -40,9 +40,9 @@ export function Navbar() {
             setOpen(false);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="flex items-center gap-2 justify-self-start whitespace-nowrap font-extrabold text-lg tracking-tight text-white sm:text-xl"
+          className="flex items-center gap-2 justify-self-start whitespace-nowrap font-extrabold text-lg tracking-tight text-[#F9FAFB] sm:text-xl"
         >
-          <Sparkles className="h-6 w-6 shrink-0 animate-pulse text-cyan-400" />
+          <Sparkles className="h-6 w-6 shrink-0 animate-pulse text-[#00F0FF]" />
           <span>TechnoAI</span>
         </a>
 
@@ -75,7 +75,7 @@ export function Navbar() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((value) => !value)}
-            className="rounded-lg border border-slate-700/80 p-2 text-slate-200 shadow-[0_0_12px_rgba(0,240,255,0.12)] transition-all hover:border-cyan-500/60 hover:text-cyan-300 hover:shadow-[0_0_18px_rgba(0,240,255,0.28)] md:hidden"
+            className="rounded-lg border border-[rgba(255,255,255,0.08)] p-2 text-[#F9FAFB] shadow-[0_0_12px_rgba(0,240,255,0.12)] transition-all hover:border-[rgba(0,240,255,0.2)] hover:text-[#00F0FF] hover:shadow-[0_0_18px_rgba(0,240,255,0.28)] md:hidden"
           >
             {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -89,7 +89,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={springSoft}
-            className="mx-auto mt-3 w-full max-w-7xl rounded-2xl border border-slate-800/60 bg-[#030712]/90 p-3 backdrop-blur-xl md:hidden"
+            className="mx-auto mt-3 w-full max-w-7xl rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#030712]/90 p-3 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-1">
               {links.map((link) => (

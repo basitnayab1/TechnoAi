@@ -24,7 +24,7 @@ const HeroModel = dynamic(
 
 export default function Home() {
   return (
-    <div className="relative w-full min-w-0 max-w-full overflow-x-hidden">
+    <div className="relative w-full min-w-0 max-w-full overflow-x-hidden bg-gradient-to-b from-[#030712] via-[#0B0F17] to-[#030712]">
       <AmbientBackdrop />
       <div className="relative z-10 w-full min-w-0 max-w-full overflow-x-hidden">
         <Navbar />

@@ -64,7 +64,7 @@ function FeatureCard({
         </span>
       </div>
       <h3 className="text-lg font-semibold">{feature.title}</h3>
-      <p className="text-sm text-foreground/60">{feature.description}</p>
+      <p className="mt-1 text-sm text-[#9CA3AF]">{feature.description}</p>
     </motion.div>
   );
 }

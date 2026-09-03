@@ -64,8 +64,8 @@ export function ZoomControls() {
         onPointerLeave={stopHold}
         onPointerCancel={stopHold}
         className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700/80 bg-slate-900/50 text-cyan-300 transition-all duration-200",
-          "hover:border-cyan-400/70 hover:text-white hover:shadow-[0_0_16px_rgba(0,240,255,0.35)]",
+          "flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)] text-[#00F0FF] transition-all duration-200",
+          "hover:border-[rgba(0,240,255,0.2)] hover:text-[#F9FAFB] hover:shadow-[0_0_16px_rgba(0,240,255,0.35)]",
           "disabled:pointer-events-none disabled:opacity-40"
         )}
       >
@@ -102,15 +102,15 @@ export function ZoomControls() {
         onPointerLeave={stopHold}
         onPointerCancel={stopHold}
         className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700/80 bg-slate-900/50 text-cyan-300 transition-all duration-200",
-          "hover:border-cyan-400/70 hover:text-white hover:shadow-[0_0_16px_rgba(0,240,255,0.35)]",
+          "flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)] text-[#00F0FF] transition-all duration-200",
+          "hover:border-[rgba(0,240,255,0.2)] hover:text-[#F9FAFB] hover:shadow-[0_0_16px_rgba(0,240,255,0.35)]",
           "disabled:pointer-events-none disabled:opacity-40"
         )}
       >
         <ZoomOut className="h-4 w-4" />
       </button>
 
-      <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-400/80">
+      <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-[#00F0FF]/80">
         Zoom
       </span>
     </div>

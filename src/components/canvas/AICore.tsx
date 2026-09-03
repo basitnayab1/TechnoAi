@@ -29,8 +29,8 @@ export function AICore() {
       <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.8}>
         <Sphere ref={coreRef} args={[1.35, 128, 128]}>
           <MeshDistortMaterial
-            color="#6d5bff"
-            emissive="#3a2bd1"
+            color="#00F0FF"
+            emissive="#2563EB"
             emissiveIntensity={0.4}
             distort={0.45}
             speed={2.2}
@@ -42,7 +42,7 @@ export function AICore() {
         <mesh ref={shellRef} scale={1.9}>
           <icosahedronGeometry args={[1, 1]} />
           <meshBasicMaterial
-            color="#00e5c7"
+            color="#06B6D4"
             wireframe
             transparent
             opacity={0.18}
@@ -50,8 +50,8 @@ export function AICore() {
         </mesh>
       </Float>
 
-      <pointLight position={[3, 2, 4]} intensity={40} color="#6d5bff" />
-      <pointLight position={[-4, -2, -3]} intensity={25} color="#00e5c7" />
+      <pointLight position={[3, 2, 4]} intensity={40} color="#00F0FF" />
+      <pointLight position={[-4, -2, -3]} intensity={25} color="#2563EB" />
     </group>
   );
 }

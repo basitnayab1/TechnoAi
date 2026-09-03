@@ -8,11 +8,11 @@ export function cn(...classes: Array<string | false | null | undefined>) {
 
 /** Glassmorphism panel matching technoai.ae floating containers. */
 export const glassPanel =
-  "bg-[#0b0f17]/70 backdrop-blur-md border border-slate-800/80 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]";
+  "bg-[rgba(11,15,23,0.75)] backdrop-blur-md border border-[rgba(255,255,255,0.08)] rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]";
 
 /** Cyan glow used on hoverable stat/feature cards. */
 export const glassHover =
-  "hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(0,240,255,0.15)] transition-all duration-300";
+  "hover:border-[rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.15)] transition-all duration-300";
 
 /** Compact card padding that stays sleek on small viewports. */
 export const glassPad = "p-3 sm:p-5";
@@ -21,22 +21,22 @@ export const glassPad = "p-3 sm:p-5";
 export const ctaMotion =
   "pointer-events-auto rounded-xl font-semibold tracking-wide hover:scale-[1.03] active:scale-[0.98] transition-all duration-300";
 
-/** Cyan-to-blue primary CTA matching technoai.ae. */
+/** Neon cyan to electric blue primary CTA matching technoai.ae. */
 export const ctaPrimary =
-  "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)]";
+  "bg-gradient-to-r from-[#00F0FF] to-[#2563EB] hover:from-[#5AF0FF] hover:to-[#3B82F6] text-white shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)]";
 
 /** Dark glass outline secondary CTA. */
 export const ctaSecondary =
-  "bg-slate-900/40 hover:bg-slate-800/60 text-slate-200 border border-slate-700/80 hover:border-cyan-500/60 backdrop-blur-md";
+  "bg-[rgba(11,15,23,0.75)] hover:bg-[#0B0F17] text-[#F9FAFB] border border-[rgba(255,255,255,0.08)] hover:border-[rgba(0,240,255,0.2)] backdrop-blur-md";
 
 /** Full-width fixed header bar matching technoai.ae. */
 export const navBarShell =
-  "fixed top-0 left-0 right-0 z-50 px-4 py-4 sm:px-8 bg-[#030712]/80 backdrop-blur-xl border-b border-slate-800/60 transition-all duration-300";
+  "fixed top-0 left-0 right-0 z-50 px-4 py-4 sm:px-8 bg-[#030712]/80 backdrop-blur-xl border-b border-[rgba(255,255,255,0.08)] transition-all duration-300";
 
 /** Desktop header links. */
 export const navLink =
-  "text-sm font-medium tracking-wide text-slate-300 transition-colors duration-200 hover:text-cyan-400";
+  "text-sm font-medium tracking-wide text-[#9CA3AF] transition-colors duration-200 hover:text-[#00F0FF]";
 
 /** Header 'START A PROJECT' pill. */
 export const navCta =
-  "rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all hover:from-blue-500 hover:to-cyan-400 hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]";
+  "rounded-full bg-gradient-to-r from-[#00F0FF] to-[#2563EB] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all hover:from-[#5AF0FF] hover:to-[#3B82F6] hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]";
