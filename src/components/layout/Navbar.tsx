@@ -1,1 +1,118 @@
-"use client";import{useState}from"react";import{AnimatePresence,motion}from"framer-motion";import{Menu,Sparkles,X}from"lucide-react";import{cn,navBarShell,navCta,navLink}from"@/lib/utils";import{springSoft}from"@/lib/motion";import{siteContent}from"@/lib/content";const links=siteContent.nav;export const BOOK_DEMO_EVENT="technoai:book-demo";export function requestBookDemo(){if (typeof window==="undefined") return;window.dispatchEvent(new CustomEvent(BOOK_DEMO_EVENT));}function scrollToHash(hash:string){const id=hash.replace("#","");document.getElementById(id)?.scrollIntoView({behavior:"smooth"});}export function Navbar(){const[open,setOpen]=useState(false);const onCta=()=>{setOpen(false);requestBookDemo();};return (<header className={navBarShell}><div className="mx-auto grid w-full min-w-0 max-w-7xl grid-cols-[1fr_auto] items-center gap-3 md:grid-cols-3"><a href="#top"onClick={(event)=>{event.preventDefault();setOpen(false);window.scrollTo({top:0,behavior:"smooth"});}}className="flex items-center gap-2 justify-self-start whitespace-nowrap font-extrabold text-lg tracking-tight text-[#F9FAFB] sm:text-xl"><Sparkles className="h-6 w-6 shrink-0 animate-pulse text-[#00F0FF]"/><span>TechnoAI</span></a><nav className="hidden items-center justify-center gap-8 justify-self-center md:flex">{links.map((link)=>(<a key={link.href}href={link.href}onClick={(event)=>{event.preventDefault();scrollToHash(link.href);}}className={navLink}>{link.label}</a>))}</nav><div className="flex items-center justify-end gap-2 justify-self-end"><button type="button"onClick={onCta}className={cn(navCta,"hidden md:inline-flex")}>{siteContent.hero.primaryCta}</button><button type="button"aria-label={open?"Close menu":"Open menu"}aria-expanded={open}onClick={()=> setOpen((value)=>!value)}className="rounded-lg border border-[rgba(255,255,255,0.08)] p-2 text-[#F9FAFB] shadow-[0_0_12px_rgba(0,240,255,0.12)] transition-all hover:border-[rgba(0,240,255,0.2)] hover:text-[#00F0FF] hover:shadow-[0_0_18px_rgba(0,240,255,0.28)] md:hidden">{open?<X className="h-4 w-4"/>:<Menu className="h-4 w-4"/>}</button></div></div><AnimatePresence>{open&&(<motion.div initial={{opacity:0,y:-8}}animate={{opacity:1,y:0}}exit={{opacity:0,y:-8}}transition={springSoft}className="mx-auto mt-3 w-full max-w-7xl rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#030712]/90 p-3 backdrop-blur-xl md:hidden"><div className="flex flex-col gap-1">{links.map((link)=>(<a key={link.href}href={link.href}onClick={(event)=>{event.preventDefault();setOpen(false);scrollToHash(link.href);}}className={cn(navLink,"rounded-lg px-3 py-2.5 hover:bg-white/5")}>{link.label}</a>))}<button type="button"onClick={onCta}className={cn(navCta,"mt-2 w-full")}>{siteContent.hero.primaryCta}</button></div></motion.div>)}</AnimatePresence></header>);}
+"use client";
+
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { cn, navBarShell, navCta, navLink } from "@/lib/utils";
+import { springSoft } from "@/lib/motion";
+import { siteContent } from "@/lib/content";
+import { BrandLogo } from "@/components/layout/BrandLogo";
+
+const links = siteContent.nav;
+
+export const BOOK_DEMO_EVENT = "technoai:book-demo";
+
+export function requestBookDemo() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(BOOK_DEMO_EVENT));
+}
+
+function scrollToHash(hash: string) {
+  const id = hash.replace("#", "");
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
+
+export function Navbar() {
+  const [open, setOpen] = useState(false);
+  const onCta = () => {
+    setOpen(false);
+    requestBookDemo();
+  };
+
+  return (
+    <header className={navBarShell}>
+      <div className="mx-auto grid w-full min-w-0 max-w-7xl grid-cols-[1fr_auto] items-center gap-3 md:grid-cols-3">
+        <a
+          href="#top"
+          onClick={(event) => {
+            event.preventDefault();
+            setOpen(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="flex items-center justify-self-start"
+          aria-label="TechnoAi home"
+        >
+          <BrandLogo height={36} priority />
+        </a>
+        <nav className="hidden items-center justify-center gap-8 justify-self-center md:flex">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(event) => {
+                event.preventDefault();
+                scrollToHash(link.href);
+              }}
+              className={navLink}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <div className="flex items-center justify-end gap-2 justify-self-end">
+          <button
+            type="button"
+            onClick={onCta}
+            className={cn(navCta, "hidden md:inline-flex")}
+          >
+            {siteContent.hero.primaryCta}
+          </button>
+          <button
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
+            className="rounded-lg border border-[rgba(255,255,255,0.08)] p-2 text-[#F9FAFB] shadow-[0_0_12px_rgba(0,240,255,0.12)] transition-all hover:border-[rgba(0,240,255,0.2)] hover:text-[#00F0FF] hover:shadow-[0_0_18px_rgba(0,240,255,0.28)] md:hidden"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={springSoft}
+            className="mx-auto mt-3 w-full max-w-7xl rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#030712]/90 p-3 backdrop-blur-xl md:hidden"
+          >
+            <div className="flex flex-col gap-1">
+              {links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setOpen(false);
+                    scrollToHash(link.href);
+                  }}
+                  className={cn(navLink, "rounded-lg px-3 py-2.5 hover:bg-white/5")}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <button
+                type="button"
+                onClick={onCta}
+                className={cn(navCta, "mt-2 w-full")}
+              >
+                {siteContent.hero.primaryCta}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}

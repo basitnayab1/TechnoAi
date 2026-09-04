@@ -1,1 +1,105 @@
-"use client";import{motion}from"framer-motion";import{Sparkles,Mail,Globe2,MapPin}from"lucide-react";import{Container}from"@/components/ui/Container";import{fadeUp,springSoft}from"@/lib/motion";import{siteContent}from"@/lib/content";const columns=[{title:"Solutions",links:siteContent.footer.sitemap.solutions},{title:"Industries",links:siteContent.footer.sitemap.industries},{title:"Services",links:siteContent.footer.sitemap.services},];export function Footer(){return (<footer id="contact"className="border-t border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)]"><Container className="grid min-w-0 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5"><motion.div variants={fadeUp}initial="initial"whileInView="animate"viewport={{once:true,amount:0.3}}transition={springSoft}className="col-span-1 flex min-w-0 flex-col gap-4 sm:col-span-2"><a href="#top"className="flex items-center gap-2 font-semibold"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary-300"><Sparkles className="h-4 w-4"/></span><span> Techno<span className="text-primary-300">Ai</span></span></a><p className="max-w-xs text-sm text-[#9CA3AF]">{siteContent.company.blurb}</p><ul className="flex flex-col gap-2 pt-1 text-sm text-[#9CA3AF]">{siteContent.company.locations.map((location)=>(<li key={location.label}className="flex items-start gap-2"><MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-300"/><span><span className="font-medium text-foreground/80">{location.label}</span>{" — "}{location.city},{location.country}</span></li>))}</ul><div className="flex items-center gap-3 pt-2">{[Mail,Globe2].map((Icon,i)=>(<a key={i}href={i===0?"mailto:info@technoai.ae":"https://technoai.ae/"}className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)] text-[#9CA3AF] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md transition-all duration-300 hover:border-[rgba(0,240,255,0.2)] hover:text-[#00F0FF] hover:shadow-[0_0_20px_rgba(0,240,255,0.15)]"><Icon className="h-4 w-4"/></a>))}</div></motion.div>{columns.map((column,columnIndex)=>(<motion.div key={column.title}variants={fadeUp}initial="initial"whileInView="animate"viewport={{once:true,amount:0.3}}transition={{...springSoft,delay:0.1+columnIndex*0.1}}className="flex flex-col gap-3"><h4 className="text-sm font-semibold text-foreground">{column.title}</h4>{column.links.map((link)=>(<a key={link}href={column.title==="Services"?"#services":"#solutions"}className="text-sm text-[#9CA3AF] transition-colors hover:text-[#F9FAFB]">{link}</a>))}</motion.div>))}</Container><Container className="flex flex-col items-center justify-between gap-4 border-t border-border py-6 text-xs text-foreground/40 sm:flex-row"><p>©{new Date().getFullYear()}{siteContent.company.name}.All rights reserved.</p><div className="flex gap-6"><a href="https://technoai.ae/"className="hover:text-foreground/70"> technoai.ae </a></div></Container></footer>);}
+"use client";
+
+import { motion } from "framer-motion";
+import { Mail, Globe2, MapPin } from "lucide-react";
+import { Container } from "@/components/ui/Container";
+import { fadeUp, springSoft } from "@/lib/motion";
+import { siteContent } from "@/lib/content";
+import { BrandLogo } from "@/components/layout/BrandLogo";
+
+const columns = [
+  { title: "Solutions", links: siteContent.footer.sitemap.solutions },
+  { title: "Industries", links: siteContent.footer.sitemap.industries },
+  { title: "Services", links: siteContent.footer.sitemap.services },
+];
+
+export function Footer() {
+  return (
+    <footer
+      id="contact"
+      className="border-t border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)]"
+    >
+      <Container className="grid min-w-0 gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
+        <motion.div
+          variants={fadeUp}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={springSoft}
+          className="col-span-1 flex min-w-0 flex-col gap-4 sm:col-span-2"
+        >
+          <a
+            href="#top"
+            className="flex items-center"
+            aria-label="TechnoAi home"
+          >
+            <BrandLogo height={36} />
+          </a>
+          <p className="max-w-xs text-sm text-[#9CA3AF]">
+            {siteContent.company.blurb}
+          </p>
+          <ul className="flex flex-col gap-2 pt-1 text-sm text-[#9CA3AF]">
+            {siteContent.company.locations.map((location) => (
+              <li key={location.label} className="flex items-start gap-2">
+                <MapPin className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-primary-300" />
+                <span>
+                  <span className="font-medium text-foreground/80">
+                    {location.label}
+                  </span>
+                  {" — "}
+                  {location.city}, {location.country}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-3 pt-2">
+            {[Mail, Globe2].map((Icon, i) => (
+              <a
+                key={i}
+                href={i === 0 ? "mailto:info@technoai.ae" : "https://technoai.ae/"}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(11,15,23,0.75)] text-[#9CA3AF] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] backdrop-blur-md transition-all duration-300 hover:border-[rgba(0,240,255,0.2)] hover:text-[#00F0FF] hover:shadow-[0_0_20px_rgba(0,240,255,0.15)]"
+              >
+                <Icon className="h-4 w-4" />
+              </a>
+            ))}
+          </div>
+        </motion.div>
+        {columns.map((column, columnIndex) => (
+          <motion.div
+            key={column.title}
+            variants={fadeUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ ...springSoft, delay: 0.1 + columnIndex * 0.1 }}
+            className="flex flex-col gap-3"
+          >
+            <h4 className="text-sm font-semibold text-foreground">
+              {column.title}
+            </h4>
+            {column.links.map((link) => (
+              <a
+                key={link}
+                href={column.title === "Services" ? "#services" : "#solutions"}
+                className="text-sm text-[#9CA3AF] transition-colors hover:text-[#F9FAFB]"
+              >
+                {link}
+              </a>
+            ))}
+          </motion.div>
+        ))}
+      </Container>
+      <Container className="flex flex-col items-center justify-between gap-4 border-t border-border py-6 text-xs text-foreground/40 sm:flex-row">
+        <p>
+          © {new Date().getFullYear()} {siteContent.company.name}. All rights
+          reserved.
+        </p>
+        <div className="flex gap-6">
+          <a href="https://technoai.ae/" className="hover:text-foreground/70">
+            technoai.ae
+          </a>
+        </div>
+      </Container>
+    </footer>
+  );
+}
